@@ -1,0 +1,33 @@
+# use a builder image for building cinatunnel
+FROM golang:1.24.13 AS builder
+ENV GO111MODULE=on \
+  CGO_ENABLED=0 \
+  # the CONTAINER_BUILD envvar is used set github.com/cinagroup/cinatunnel/metrics.Runtime=virtual
+  # which changes how cinatunnel binds the metrics server
+  CONTAINER_BUILD=1 
+
+WORKDIR /go/src/github.com/cinagroup/cinatunnel/
+
+# copy our sources into the builder image
+COPY . .
+
+# compile cinatunnel
+RUN GOOS=linux GOARCH=amd64 make cinatunnel
+
+# use a distroless base image with glibc
+FROM gcr.io/distroless/base-debian13:nonroot
+
+LABEL org.opencontainers.image.source="https://github.com/cinagroup/cinatunnel"
+
+# copy our compiled binary
+COPY --from=builder --chown=nonroot /go/src/github.com/cinagroup/cinatunnel/cinatunnel /usr/local/bin/
+
+# run as nonroot user
+# We need to use numeric user id's because Kubernetes doesn't support strings:
+# https://github.com/kubernetes/kubernetes/blob/v1.33.2/pkg/kubelet/kuberuntime/security_context_others.go#L49
+# The `nonroot` user maps to `65532`, from: https://github.com/GoogleContainerTools/distroless/blob/main/common/variables.bzl#L18
+USER 65532:65532
+
+# command / entrypoint of container
+ENTRYPOINT ["cinatunnel", "--no-autoupdate"]
+CMD ["version"]
