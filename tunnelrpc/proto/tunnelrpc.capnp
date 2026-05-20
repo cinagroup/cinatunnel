@@ -1,7 +1,7 @@
 using Go = import "go.capnp";
 @0xdb8274f9144abc7e;
 $Go.package("proto");
-$Go.import("github.com/cloudflare/cloudflared/tunnelrpc");
+$Go.import("github.com/cinagroup/cinatunnel/tunnelrpc");
 
 # === DEPRECATED Legacy Tunnel Authentication and Registration methods/servers ===
 # 
@@ -62,7 +62,7 @@ struct RegistrationOptions @0xc793e50592935b4a {
     uuid @11 :Text;
     # number of previous attempts to send RegisterTunnel/ReconnectTunnel
     numPreviousAttempts @12 :UInt8;
-    # Set of features this cloudflared knows it supports
+    # Set of features this cinatunnel knows it supports
     features @13 :List(Text);
 }
 
@@ -113,7 +113,7 @@ struct Tag @0xcbd96442ae3bb01a {
 struct ClientInfo @0x83ced0145b2f114b {
     # The tunnel client's unique identifier, used to verify a reconnection.
     clientId @0 :Data;
-    # Set of features this cloudflared knows it supports
+    # Set of features this cinatunnel knows it supports
     features @1 :List(Text);
     # Information about the running binary.
     version @2 :Text;
@@ -174,20 +174,20 @@ struct RegisterUdpSessionResponse @0xab6d5210c1f26687 {
 }
 
 interface SessionManager @0x839445a59fb01686 {
-    # Let the edge decide closeAfterIdle to make sure cloudflared doesn't close session before the edge closes its side
+    # Let the edge decide closeAfterIdle to make sure cinatunnel doesn't close session before the edge closes its side
     registerUdpSession @0 (sessionId :Data, dstIp :Data, dstPort :UInt16, closeAfterIdleHint :Int64, traceContext :Text = "") -> (result :RegisterUdpSessionResponse);
     unregisterUdpSession @1 (sessionId :Data, message :Text) -> ();
 }
 
 struct UpdateConfigurationResponse @0xdb58ff694ba05cf9 {
     # Latest configuration that was applied successfully. The err field might be populated at the same time to indicate
-    # that cloudflared is using an older configuration because the latest cannot be applied
+    # that cinatunnel is using an older configuration because the latest cannot be applied
     latestAppliedVersion @0 :Int32;
     # Any error encountered when trying to apply the last configuration
     err @1 :Text;
 }
 
-# ConfigurationManager defines RPC to manage cloudflared configuration remotely
+# ConfigurationManager defines RPC to manage cinatunnel configuration remotely
 interface ConfigurationManager @0xb48edfbdaa25db04 {
     updateConfiguration @0 (version :Int32, config :Data) -> (result: UpdateConfigurationResponse);
 }

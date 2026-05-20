@@ -78,7 +78,7 @@ func (collector *SystemCollectorImpl) Collect(ctx context.Context) (*SystemInfor
 		architecture = osInfo.Architecture
 	}
 
-	cloudflaredVersion := collector.version
+	cinatunnelVersion := collector.version
 	info := NewSystemInformation(
 		memoryMaximum,
 		memoryCurrent,
@@ -89,7 +89,7 @@ func (collector *SystemCollectorImpl) Collect(ctx context.Context) (*SystemInfor
 		osVersion,
 		osRelease,
 		architecture,
-		cloudflaredVersion,
+		cinatunnelVersion,
 		runtime.Version(),
 		runtime.GOARCH,
 		disks,

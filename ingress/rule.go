@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudflare/cloudflared/ingress/middleware"
+	"github.com/cinagroup/cinatunnel/ingress/middleware"
 )
 
 // Rule routes traffic from a hostname/path on the public internet to the
@@ -28,11 +28,11 @@ type Rule struct {
 	// Handlers is a list of functions that acts as a middleware during ProxyHTTP
 	Handlers []middleware.Handler
 
-	// Configure the request cloudflared sends to this specific origin.
+	// Configure the request cinatunnel sends to this specific origin.
 	Config OriginRequestConfig `json:"originRequest"`
 }
 
-// MultiLineString is for outputting rules in a human-friendly way when Cloudflared
+// MultiLineString is for outputting rules in a human-friendly way when Cinatunnel
 // is used as a CLI tool (not as a daemon).
 func (r Rule) MultiLineString() string {
 	var out strings.Builder

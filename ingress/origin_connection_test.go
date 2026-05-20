@@ -19,14 +19,14 @@ import (
 	"golang.org/x/net/proxy"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/cloudflare/cloudflared/socks"
-	"github.com/cloudflare/cloudflared/stream"
-	"github.com/cloudflare/cloudflared/websocket"
+	"github.com/cinagroup/cinatunnel/socks"
+	"github.com/cinagroup/cinatunnel/stream"
+	"github.com/cinagroup/cinatunnel/websocket"
 )
 
 const (
 	testStreamTimeout = time.Second * 3
-	echoHeaderName    = "Test-Cloudflared-Echo"
+	echoHeaderName    = "Test-Cinatunnel-Echo"
 )
 
 var (
@@ -97,7 +97,7 @@ func TestDefaultStreamWSOverTCPConnection(t *testing.T) {
 }
 
 // TestSocksStreamWSOverTCPConnection simulates proxying in socks mode.
-// Eyeball side runs cloudflared access tcp with --url flag to start a websocket forwarder which
+// Eyeball side runs cinatunnel access tcp with --url flag to start a websocket forwarder which
 // wraps SOCKS5 traffic in websocket
 // Origin side runs a tcpOverWSConnection with socks.StreamHandler
 func TestSocksStreamWSOverTCPConnection(t *testing.T) {
@@ -282,7 +282,7 @@ func echoWSOrigin(t *testing.T, expectMessages bool) *httptest.Server {
 	ws := func(w http.ResponseWriter, r *http.Request) {
 		header := make(http.Header)
 		for k, vs := range r.Header {
-			if k == "Test-Cloudflared-Echo" {
+			if k == "Test-Cinatunnel-Echo" {
 				header[k] = vs
 			}
 		}

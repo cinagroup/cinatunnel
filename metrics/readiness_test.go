@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/metrics"
-	"github.com/cloudflare/cloudflared/tunnelstate"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelstate"
 )
 
 func mockRequest(t *testing.T, readyServer *metrics.ReadyServer) (int, uint) {

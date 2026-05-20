@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 const (
@@ -139,7 +139,7 @@ func TestRegisterUdpSession(t *testing.T) {
 			clientStream, serverStream := newMockRPCStreams()
 			sessionRegisteredChan := make(chan struct{})
 			go func() {
-				ss := NewCloudflaredServer(nil, test.sessionRPCServer, nil, 10*time.Second)
+				ss := NewCinatunnelServer(nil, test.sessionRPCServer, nil, 10*time.Second)
 				err := ss.Serve(t.Context(), serverStream)
 				assert.NoError(t, err)
 
@@ -147,7 +147,7 @@ func TestRegisterUdpSession(t *testing.T) {
 				close(sessionRegisteredChan)
 			}()
 
-			rpcClientStream, err := NewCloudflaredClient(t.Context(), clientStream, 5*time.Second)
+			rpcClientStream, err := NewCinatunnelClient(t.Context(), clientStream, 5*time.Second)
 			require.NoError(t, err)
 
 			reg, err := rpcClientStream.RegisterUdpSession(t.Context(), test.sessionRPCServer.sessionID, test.sessionRPCServer.dstIP, test.sessionRPCServer.dstPort, testCloseIdleAfterHint, test.sessionRPCServer.traceContext)
@@ -184,7 +184,7 @@ func TestManageConfiguration(t *testing.T) {
 
 	updatedChan := make(chan struct{})
 	go func() {
-		server := NewCloudflaredServer(nil, nil, configRPCServer, 10*time.Second)
+		server := NewCinatunnelServer(nil, nil, configRPCServer, 10*time.Second)
 		err := server.Serve(t.Context(), serverStream)
 		assert.NoError(t, err)
 
@@ -194,7 +194,7 @@ func TestManageConfiguration(t *testing.T) {
 
 	ctx, cancel := context.WithTimeout(t.Context(), time.Second)
 	defer cancel()
-	rpcClientStream, err := NewCloudflaredClient(ctx, clientStream, 5*time.Second)
+	rpcClientStream, err := NewCinatunnelClient(ctx, clientStream, 5*time.Second)
 	require.NoError(t, err)
 
 	result, err := rpcClientStream.UpdateConfiguration(ctx, version, config)

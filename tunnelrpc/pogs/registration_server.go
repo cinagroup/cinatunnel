@@ -12,17 +12,17 @@ import (
 	"zombiezen.com/go/capnproto2/rpc"
 	"zombiezen.com/go/capnproto2/server"
 
-	"github.com/cloudflare/cloudflared/tunnelrpc/metrics"
-	"github.com/cloudflare/cloudflared/tunnelrpc/proto"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/proto"
 )
 
 type RegistrationServer interface {
 	// RegisterConnection is the call typically handled by the edge to initiate and authenticate a new connection
-	// for cloudflared.
+	// for cinatunnel.
 	RegisterConnection(ctx context.Context, auth TunnelAuth, tunnelID uuid.UUID, connIndex byte, options *ConnectionOptions) (*ConnectionDetails, error)
-	// UnregisterConnection is the call typically handled by the edge to close an existing connection for cloudflared.
+	// UnregisterConnection is the call typically handled by the edge to close an existing connection for cinatunnel.
 	UnregisterConnection(ctx context.Context)
-	// UpdateLocalConfiguration is the call typically handled by the edge for cloudflared to provide the current
+	// UpdateLocalConfiguration is the call typically handled by the edge for cinatunnel to provide the current
 	// configuration it is operating with.
 	UpdateLocalConfiguration(ctx context.Context, config []byte) error
 }

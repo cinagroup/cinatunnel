@@ -4,13 +4,13 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/cfapi"
+	"github.com/cinagroup/cinatunnel/cfapi"
 )
 
 const (
 	logFieldOriginCertPath = "originCertPath"
 	FedEndpoint            = "fed"
-	FedRampBaseApiURL      = "https://api.fed.cloudflare.com/client/v4"
+	FedRampBaseApiURL      = "https://api.fed.cina.com/client/v4"
 	FedRampHostname        = "management.fed.argotunnel.com"
 )
 
@@ -43,10 +43,10 @@ func (c User) IsFEDEndpoint() bool {
 	return c.cert.Endpoint == FedEndpoint
 }
 
-// Client uses the user credentials to create a Cloudflare API client
+// Client uses the user credentials to create a Cina API client
 func (c *User) Client(apiURL string, userAgent string, log *zerolog.Logger) (cfapi.Client, error) {
 	if apiURL == "" {
-		return nil, errors.New("An api-url was not provided for the Cloudflare API client")
+		return nil, errors.New("An api-url was not provided for the Cina API client")
 	}
 	client, err := cfapi.NewRESTClient(
 		apiURL,
@@ -83,7 +83,7 @@ func Read(originCertPath string, log *zerolog.Logger) (*User, error) {
 	}
 
 	if cert.AccountID == "" {
-		return nil, errors.Errorf(`Origin certificate needs to be refreshed before creating new tunnels.\nDelete %s and run "cloudflared login" to obtain a new cert.`, originCertPath)
+		return nil, errors.Errorf(`Origin certificate needs to be refreshed before creating new tunnels.\nDelete %s and run "cinatunnel login" to obtain a new cert.`, originCertPath)
 	}
 
 	return &User{

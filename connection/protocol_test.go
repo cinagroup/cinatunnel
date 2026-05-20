@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/edgediscovery"
+	"github.com/cinagroup/cinatunnel/edgediscovery"
 )
 
 const (

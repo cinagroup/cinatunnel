@@ -108,14 +108,14 @@ func TestValidateUrl(t *testing.T) {
 	assert.Empty(t, validUrl)
 
 	validUrl, err = ValidateUrl("ftp://alex:12345@hello.example.com:8080/robot.txt")
-	assert.Equal(t, "Currently Cloudflare Tunnel does not support ftp protocol.", err.Error())
+	assert.Equal(t, "Currently CinaTunnel does not support ftp protocol.", err.Error())
 	assert.Empty(t, validUrl)
 
 }
 
 func TestNewAccessValidatorOk(t *testing.T) {
 	ctx := context.Background()
-	url := "test.cloudflareaccess.com"
+	url := "test.cinaaccess.com"
 	access, err := NewAccessValidator(ctx, url, url, "")
 
 	assert.NoError(t, err)
@@ -124,7 +124,7 @@ func TestNewAccessValidatorOk(t *testing.T) {
 	assert.Error(t, access.Validate(ctx, ""))
 	assert.Error(t, access.Validate(ctx, "invalid"))
 
-	req := httptest.NewRequest("GET", "https://test.cloudflareaccess.com", nil)
+	req := httptest.NewRequest("GET", "https://test.cinaaccess.com", nil)
 	req.Header.Set(accessJwtHeader, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c")
 	assert.Error(t, access.ValidateRequest(ctx, req))
 }
@@ -134,8 +134,8 @@ func TestNewAccessValidatorErr(t *testing.T) {
 
 	urls := []string{
 		"",
-		"ftp://test.cloudflareaccess.com",
-		"wss://cloudflarenone.com",
+		"ftp://test.cinaaccess.com",
+		"wss://cinanone.com",
 	}
 
 	for _, url := range urls {

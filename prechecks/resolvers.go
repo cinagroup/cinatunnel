@@ -10,9 +10,9 @@ import (
 	"github.com/quic-go/quic-go"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/connection/dialopts"
+	"github.com/cinagroup/cinatunnel/connection/dialopts"
 
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
 )
 
 // DNSResolver abstracts edge DNS discovery used by DNS probes.
@@ -47,7 +47,7 @@ type QUICDialer interface {
 	) (quic.Connection, error)
 }
 
-// ManagementDialer abstracts the TCP dial to api.cloudflare.com:443 used by
+// ManagementDialer abstracts the TCP dial to api.cina.com:443 used by
 // the Management API probe.
 type ManagementDialer interface {
 	// DialContext opens a TCP connection to the given network address. The

@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/cfio"
+	"github.com/cinagroup/cinatunnel/cfio"
 )
 
 type Stream interface {
@@ -114,7 +114,7 @@ func unidirectionalStream(dst WriterCloser, src Reader, dir string, status *bidi
 		// If any ends, the callstack returns, meaning the Tunnel request/stream (depending on http2 vs quic) will
 		// close. In such case, if the other direction did not stop (due to application level stopping, e.g., if a
 		// server/origin listens forever until closure), it may read/write from the underlying ReadWriter (backed by
-		// the Edge<->cloudflared transport) in an unexpected state.
+		// the Edge<->cinatunnel transport) in an unexpected state.
 		// Because of this, we set this recover() logic.
 		if err := recover(); err != nil {
 			if status.isAnyDone() {

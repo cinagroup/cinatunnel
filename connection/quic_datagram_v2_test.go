@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
-	"github.com/cloudflare/cloudflared/mocks"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
+	"github.com/cinagroup/cinatunnel/mocks"
 )
 
 type mockQuicConnection struct{}

@@ -11,15 +11,15 @@ import (
 	"zombiezen.com/go/capnproto2/rpc"
 	"zombiezen.com/go/capnproto2/server"
 
-	"github.com/cloudflare/cloudflared/tunnelrpc/metrics"
-	"github.com/cloudflare/cloudflared/tunnelrpc/proto"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/proto"
 )
 
 type SessionManager interface {
-	// RegisterUdpSession is the call provided to cloudflared to handle an incoming
+	// RegisterUdpSession is the call provided to cinatunnel to handle an incoming
 	// capnproto RegisterUdpSession request from the edge.
 	RegisterUdpSession(ctx context.Context, sessionID uuid.UUID, dstIP net.IP, dstPort uint16, closeAfterIdleHint time.Duration, traceContext string) (*RegisterUdpSessionResponse, error)
-	// UnregisterUdpSession is the call provided to cloudflared to handle an incoming
+	// UnregisterUdpSession is the call provided to cinatunnel to handle an incoming
 	// capnproto UnregisterUdpSession request from the edge.
 	UnregisterUdpSession(ctx context.Context, sessionID uuid.UUID, message string) error
 }

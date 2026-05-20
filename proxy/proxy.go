@@ -14,25 +14,25 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
-	"github.com/cloudflare/cloudflared/management"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
+	"github.com/cinagroup/cinatunnel/management"
 
-	"github.com/cloudflare/cloudflared/carrier"
-	"github.com/cloudflare/cloudflared/cfio"
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/stream"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/carrier"
+	"github.com/cinagroup/cinatunnel/cfio"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/stream"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 const (
-	// TagHeaderNamePrefix indicates a Cloudflared Warp Tag prefix that gets appended for warp traffic stream headers.
+	// TagHeaderNamePrefix indicates a Cinatunnel Warp Tag prefix that gets appended for warp traffic stream headers.
 	TagHeaderNamePrefix = "Cf-Warp-Tag-"
 	trailerHeaderName   = "Trailer"
 )
 
-// Proxy represents a means to Proxy between cloudflared and the origin services.
+// Proxy represents a means to Proxy between cinatunnel and the origin services.
 type Proxy struct {
 	ingressRules ingress.Ingress
 	originDialer ingress.OriginTCPDialer
@@ -141,7 +141,7 @@ func (p *Proxy) ProxyHTTP(
 	}
 }
 
-// ProxyTCP proxies to a TCP connection between the origin service and cloudflared.
+// ProxyTCP proxies to a TCP connection between the origin service and cinatunnel.
 func (p *Proxy) ProxyTCP(
 	ctx context.Context,
 	conn connection.ReadWriteAcker,
@@ -224,7 +224,7 @@ func (p *Proxy) proxyHTTPRequest(
 		if err := roundTripReq.Context().Err(); err != nil {
 			return errors.Wrap(err, "Incoming request ended abruptly")
 		}
-		return errors.Wrap(err, "Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared")
+		return errors.Wrap(err, "Unable to reach the origin service. The service may be down or it may not be responding to traffic from cinatunnel")
 	}
 
 	tracing.EndWithStatusCode(ttfbSpan, resp.StatusCode)

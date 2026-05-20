@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from util import start_cloudflared
+from util import start_cinatunnel
 
 
 class TestConfig:
@@ -33,7 +33,7 @@ class TestConfig:
         }
         config = component_tests_config(extra_config)
         validate_args = ["ingress", "validate"]
-        _ = start_cloudflared(tmp_path, config, validate_args)
+        _ = start_cinatunnel(tmp_path, config, validate_args)
 
         self.match_rule(tmp_path, config,
                         "http://example.com/index.html", 0)
@@ -52,6 +52,6 @@ class TestConfig:
 
     def match_rule(self, tmp_path, config, url, rule_num):
         args = ["ingress", "rule", url]
-        match_rule = start_cloudflared(tmp_path, config, args)
+        match_rule = start_cinatunnel(tmp_path, config, args)
 
         assert f"Matched rule #{rule_num}" .encode() in match_rule.stdout

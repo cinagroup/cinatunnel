@@ -3,17 +3,17 @@ import json
 import os
 
 from constants import MAX_LOG_LINES
-from util import start_cloudflared, wait_tunnel_ready, send_requests
+from util import start_cinatunnel, wait_tunnel_ready, send_requests
 
 # Rolling logger rotate log files after 1 MB
 rotate_after_size = 1000 * 1000
-default_log_file = "cloudflared.log"
+default_log_file = "cinatunnel.log"
 expect_message = "Starting Hello"
 
 
-def assert_log_to_terminal(cloudflared):
+def assert_log_to_terminal(cinatunnel):
     for _ in range(0, MAX_LOG_LINES):
-        line = cloudflared.stderr.readline()
+        line = cinatunnel.stderr.readline()
         if not line:
             break
         if expect_message.encode() in line:
@@ -74,9 +74,9 @@ def assert_log_to_dir(config, log_dir):
 class TestLogging:
     def test_logging_to_terminal(self, tmp_path, component_tests_config):
         config = component_tests_config()
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True) as cloudflared:
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True) as cinatunnel:
             wait_tunnel_ready(tunnel_url=config.get_url())
-            assert_log_to_terminal(cloudflared)
+            assert_log_to_terminal(cinatunnel)
 
     def test_logging_to_file(self, tmp_path, component_tests_config):
         log_file = tmp_path / default_log_file
@@ -85,7 +85,7 @@ class TestLogging:
             "logfile": str(log_file),
         }
         config = component_tests_config(extra_config)
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True, capture_output=False):
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True, capture_output=False):
             wait_tunnel_ready(tunnel_url=config.get_url(), cfd_logs=str(log_file))
             assert_log_in_file(log_file)
             assert_json_log(log_file)
@@ -98,6 +98,6 @@ class TestLogging:
             "log-directory": str(log_dir),
         }
         config = component_tests_config(extra_config)
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True, capture_output=False):
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"], new_process=True, capture_output=False):
             wait_tunnel_ready(tunnel_url=config.get_url(), cfd_logs=str(log_dir))
             assert_log_to_dir(config, log_dir)

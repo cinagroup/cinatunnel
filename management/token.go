@@ -47,7 +47,7 @@ func ParseToken(token string) (*managementTokenClaims, error) {
 	}
 
 	var claims managementTokenClaims
-	// This is actually safe because we verify the token in the edge before it reaches cloudflared
+	// This is actually safe because we verify the token in the edge before it reaches cinatunnel
 	err = jwt.UnsafeClaimsWithoutVerification(&claims)
 	if err != nil {
 		return nil, fmt.Errorf("malformed jwt: %v", err)

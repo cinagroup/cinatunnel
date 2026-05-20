@@ -7,10 +7,10 @@
 
 2. Create a config yaml file, for example:
 ```
-cloudflared_binary: "cloudflared"
+cinatunnel_binary: "cinatunnel"
 tunnel: "3d539f97-cd3a-4d8e-c33b-65e9099c7a8d"
-credentials_file: "/Users/tunnel/.cloudflared/3d539f97-cd3a-4d8e-c33b-65e9099c7a8d.json"
-origincert: "/Users/tunnel/.cloudflared/cert.pem"
+credentials_file: "/Users/tunnel/.cinatunnel/3d539f97-cd3a-4d8e-c33b-65e9099c7a8d.json"
+origincert: "/Users/tunnel/.cinatunnel/cert.pem"
 ingress:
 - hostname: named-tunnel-component-tests.example.com
   service: hello_world
@@ -19,7 +19,7 @@ ingress:
 
 3. Route hostname to the tunnel. For the example config above, we can do that via
 ```
-   cloudflared tunnel route dns 3d539f97-cd3a-4d8e-c33b-65e9099c7a8d named-tunnel-component-tests.example.com
+   cinatunnel tunnel route dns 3d539f97-cd3a-4d8e-c33b-65e9099c7a8d named-tunnel-component-tests.example.com
 ```
 
 4. Turn on linter
@@ -30,7 +30,7 @@ If you are using Visual Studio, follow https://code.visualstudio.com/docs/python
 to turn on formatter and https://marketplace.visualstudio.com/items?itemName=cbrevik.toggle-format-on-save
 to turn on format on save.
 
-6. If you have cloudflared running as a service on your machine, you can either stop the service or ignore the service tests
+6. If you have cinatunnel running as a service on your machine, you can either stop the service or ignore the service tests
 via `--ignore test_service.py`
 
 # How to run

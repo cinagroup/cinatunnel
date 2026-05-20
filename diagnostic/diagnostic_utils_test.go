@@ -14,9 +14,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/diagnostic"
-	"github.com/cloudflare/cloudflared/metrics"
-	"github.com/cloudflare/cloudflared/tunnelstate"
+	"github.com/cinagroup/cinatunnel/diagnostic"
+	"github.com/cinagroup/cinatunnel/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelstate"
 )
 
 func helperCreateServer(t *testing.T, listeners *gracenet.Net, tunnelID uuid.UUID, connectorID uuid.UUID) func() {

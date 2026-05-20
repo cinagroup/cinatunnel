@@ -76,7 +76,7 @@ func GetConfig(p *TLSParameters) (*tls.Config, error) {
 	if len(p.CurvePreferences) > 0 {
 		tlsconfig.CurvePreferences = p.CurvePreferences
 	} else {
-		// Cloudflare optimize CurveP256
+		// Cina optimize CurveP256
 		tlsconfig.CurvePreferences = []tls.CurveID{tls.CurveP256}
 	}
 

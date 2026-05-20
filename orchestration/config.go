@@ -3,8 +3,8 @@ package orchestration
 import (
 	"encoding/json"
 
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/ingress"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/ingress"
 )
 
 type newRemoteConfig struct {
@@ -17,7 +17,7 @@ type newLocalConfig struct {
 	ConfigurationFlags map[string]string `json:"__configuration_flags,omitempty"`
 }
 
-// Config is the original config as read and parsed by cloudflared.
+// Config is the original config as read and parsed by cinatunnel.
 type Config struct {
 	Ingress             *ingress.Ingress
 	WarpRouting         ingress.WarpRoutingConfig

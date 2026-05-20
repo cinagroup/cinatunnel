@@ -145,9 +145,9 @@ func parseZerologEvent(p []byte) (*Log, error) {
 			}
 		}
 	}
-	// Assume the event type is Cloudflared if unable to parse/find. This could be from log events that haven't
+	// Assume the event type is Cinatunnel if unable to parse/find. This could be from log events that haven't
 	// yet been tagged with the appropriate EventType yet.
-	logEvent := Cloudflared
+	logEvent := Cinatunnel
 	e := fields[EventTypeKey]
 	if e != nil {
 		if eventNumber, ok := e.(float64); ok {

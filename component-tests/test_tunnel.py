@@ -3,8 +3,8 @@ import requests
 from conftest import CfdModes
 from constants import METRICS_PORT, MAX_RETRIES, BACKOFF_SECS
 from retrying import retry
-from cli import CloudflaredCli
-from util import LOGGER, write_config, start_cloudflared, wait_tunnel_ready, send_requests
+from cli import CinatunnelCli
+from util import LOGGER, write_config, start_cinatunnel, wait_tunnel_ready, send_requests
 import platform
 
 class TestTunnel:
@@ -13,14 +13,14 @@ class TestTunnel:
     def test_tunnel_hello_world(self, tmp_path, component_tests_config):
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(),
                               require_min_connections=1)
     
     def test_tunnel_url(self, tmp_path, component_tests_config):
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run", "--url", f"http://localhost:{METRICS_PORT}/"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run", "--url", f"http://localhost:{METRICS_PORT}/"], new_process=True):
             wait_tunnel_ready(require_min_connections=1)
             send_requests(config.get_url()+"/ready", 3, True)
 
@@ -31,13 +31,13 @@ class TestTunnel:
         '''
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
-        with start_cloudflared(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_pre_args=["tunnel", "--ha-connections", "1"],  cfd_args=["run"], new_process=True):
             wait_tunnel_ready(require_min_connections=1)
             expected_status_code = 503
             resp = send_request(config.get_url()+"/", expected_status_code)
-            assert resp.status_code == expected_status_code, "Expected cloudflared to return 503 for all requests with no ingress defined"
+            assert resp.status_code == expected_status_code, "Expected cinatunnel to return 503 for all requests with no ingress defined"
             resp = send_request(config.get_url()+"/test", expected_status_code)
-            assert resp.status_code == expected_status_code, "Expected cloudflared to return 503 for all requests with no ingress defined"
+            assert resp.status_code == expected_status_code, "Expected cinatunnel to return 503 for all requests with no ingress defined"
 
 def retry_if_result_none(result):
     '''

@@ -45,10 +45,10 @@ func TestJSONArgoTunnelToken(t *testing.T) {
 	// "apiToken": "test-service-key",
 	// "accountID": "abcdabcdabcdabcd1234567890abcdef"
 	// }
-	CloudflareTunnelTokenTest(t, "test-cloudflare-tunnel-cert-json.pem")
+	CinaTunnelTokenTest(t, "test-cina-tunnel-cert-json.pem")
 }
 
-func CloudflareTunnelTokenTest(t *testing.T, path string) {
+func CinaTunnelTokenTest(t *testing.T, path string) {
 	blocks, err := os.ReadFile(path)
 	require.NoError(t, err)
 	cert, err := decodeOriginCert(blocks)
@@ -60,7 +60,7 @@ func CloudflareTunnelTokenTest(t *testing.T, path string) {
 }
 
 func TestFindOriginCert_Valid(t *testing.T) {
-	file, err := os.ReadFile("test-cloudflare-tunnel-cert-json.pem")
+	file, err := os.ReadFile("test-cina-tunnel-cert-json.pem")
 	require.NoError(t, err)
 	dir := t.TempDir()
 	certPath := filepath.Join(dir, originCertFile)

@@ -16,17 +16,17 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
 
-	"github.com/cloudflare/cloudflared/datagramsession"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/management"
-	"github.com/cloudflare/cloudflared/packet"
-	cfdquic "github.com/cloudflare/cloudflared/quic"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	tunnelpogs "github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	rpcquic "github.com/cloudflare/cloudflared/tunnelrpc/quic"
+	"github.com/cinagroup/cinatunnel/datagramsession"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/management"
+	"github.com/cinagroup/cinatunnel/packet"
+	cfdquic "github.com/cinagroup/cinatunnel/quic"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	tunnelpogs "github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	rpcquic "github.com/cinagroup/cinatunnel/tunnelrpc/quic"
 )
 
 const (

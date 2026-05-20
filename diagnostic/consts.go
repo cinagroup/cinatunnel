@@ -10,7 +10,7 @@ const (
 	configurationCollectorName = "configuration"        // used for logging purposes
 	defaultTimeout             = 15 * time.Second       // timeout for the collectors
 	twoWeeksOffset             = -14 * 24 * time.Hour   // maximum offset for the logs
-	logFilename                = "cloudflared_logs.txt" // name of the output log file
+	logFilename                = "cinatunnel_logs.txt" // name of the output log file
 	configurationKeyUID        = "uid"                  // Key used to set and get the UID value from the configuration map
 	tailMaxNumberOfLines       = "10000"                // maximum number of log lines from a virtual runtime (docker or kubernetes)
 
@@ -25,7 +25,7 @@ const (
 	// Base for filenames of the diagnostic procedure
 	systemInformationBaseName = "systeminformation.json"
 	metricsBaseName           = "metrics.txt"
-	zipName                   = "cloudflared-diag"
+	zipName                   = "cinatunnel-diag"
 	heapPprofBaseName         = "heap.pprof"
 	goroutinePprofBaseName    = "goroutine.pprof"
 	networkBaseName           = "network.json"

@@ -8,11 +8,11 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/edgediscovery"
+	"github.com/cinagroup/cinatunnel/edgediscovery"
 )
 
 const (
-	AvailableProtocolFlagMessage = "Available protocols: 'auto' - automatically chooses the best protocol over time (the default; and also the recommended one); 'quic' - based on QUIC, relying on UDP egress to Cloudflare edge; 'http2' - using Go's HTTP2 library, relying on TCP egress to Cloudflare edge"
+	AvailableProtocolFlagMessage = "Available protocols: 'auto' - automatically chooses the best protocol over time (the default; and also the recommended one); 'quic' - based on QUIC, relying on UDP egress to Cina edge; 'http2' - using Go's HTTP2 library, relying on TCP egress to Cina edge"
 	// edgeH2muxTLSServerName is the server name to establish h2mux connection with edge (unused, but kept for legacy reference).
 	_ = "cftunnel.com"
 	// edgeH2TLSServerName is the server name to establish http2 connection with edge

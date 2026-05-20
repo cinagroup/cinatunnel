@@ -24,13 +24,13 @@ import (
 )
 
 const (
-	service              = "cloudflared"
+	service              = "cinatunnel"
 	tracerInstrumentName = "origin"
 
 	TracerContextName         = "cf-trace-id"
 	TracerContextNameOverride = "uber-trace-id"
 
-	IntCloudflaredTracingHeader = "cf-int-cloudflared-tracing"
+	IntCinatunnelTracingHeader = "cf-int-cinatunnel-tracing"
 
 	MaxErrorDescriptionLen = 100
 	traceHttpStatusCodeKey = "upstreamStatusCode"
@@ -40,7 +40,7 @@ const (
 )
 
 var (
-	CanonicalCloudflaredTracingHeader = http.CanonicalHeaderKey(IntCloudflaredTracingHeader)
+	CanonicalCinatunnelTracingHeader = http.CanonicalHeaderKey(IntCinatunnelTracingHeader)
 	Http2TransportAttribute           = trace.WithAttributes(transportAttributeKey.String("http2"))
 	QuicTransportAttribute            = trace.WithAttributes(transportAttributeKey.String("quic"))
 	HostOSAttribute                   = semconv.HostTypeKey.String(runtime.GOOS)
@@ -48,7 +48,7 @@ var (
 
 	otelVersionAttribute        attribute.KeyValue
 	hostnameAttribute           attribute.KeyValue
-	cloudflaredVersionAttribute attribute.KeyValue
+	cinatunnelVersionAttribute attribute.KeyValue
 	serviceAttribute            = semconv.ServiceNameKey.String(service)
 
 	transportAttributeKey   = attribute.Key("transport")
@@ -67,7 +67,7 @@ func init() {
 }
 
 func Init(version string) {
-	cloudflaredVersionAttribute = semconv.ProcessRuntimeVersionKey.String(version)
+	cinatunnelVersionAttribute = semconv.ProcessRuntimeVersionKey.String(version)
 }
 
 type TracedHTTPRequest struct {
@@ -125,7 +125,7 @@ func newCfdTracer(ctx context.Context, log *zerolog.Logger) *cfdTracer {
 			serviceAttribute,
 			otelVersionAttribute,
 			hostnameAttribute,
-			cloudflaredVersionAttribute,
+			cinatunnelVersionAttribute,
 			HostOSAttribute,
 			HostArchAttribute,
 		)),
@@ -187,7 +187,7 @@ func (cft *cfdTracer) AddSpans(headers http.Header) {
 		return
 	}
 
-	headers[CanonicalCloudflaredTracingHeader] = []string{enc}
+	headers[CanonicalCinatunnelTracingHeader] = []string{enc}
 }
 
 // End will set the OK status for the span and then end it.

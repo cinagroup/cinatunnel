@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// tunnelsForHA maps this cloudflared instance's HA connections to the tunnel IDs they serve.
+// tunnelsForHA maps this cinatunnel instance's HA connections to the tunnel IDs they serve.
 type tunnelsForHA struct {
 	sync.Mutex
 	metrics *prometheus.GaugeVec
@@ -19,7 +19,7 @@ func newTunnelsForHA() tunnelsForHA {
 	metrics := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "tunnel_ids",
-			Help: "The ID of all tunnels (and their corresponding HA connection ID) running in this instance of cloudflared.",
+			Help: "The ID of all tunnels (and their corresponding HA connection ID) running in this instance of cinatunnel.",
 		},
 		[]string{"tunnel_id", "ha_conn_id"},
 	)

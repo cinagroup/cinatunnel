@@ -9,11 +9,11 @@ import pytest
 
 import test_logging
 from conftest import CfdModes
-from util import select_platform, skip_on_ci, start_cloudflared, wait_tunnel_ready, write_config
+from util import select_platform, skip_on_ci, start_cinatunnel, wait_tunnel_ready, write_config
 
 
 def default_config_dir():
-    return os.path.join(Path.home(), ".cloudflared")
+    return os.path.join(Path.home(), ".cinatunnel")
 
 
 def default_config_file():
@@ -26,7 +26,7 @@ class TestServiceMode:
     def test_launchd_service_log_to_file(self, tmp_path, component_tests_config):
         log_file = tmp_path / test_logging.default_log_file
         additional_config = {
-            # On Darwin cloudflared service defaults to run classic tunnel command
+            # On Darwin cinatunnel service defaults to run classic tunnel command
             "hello-world": True,
             "logfile": str(log_file),
         }
@@ -58,7 +58,7 @@ class TestServiceMode:
     def test_launchd_service_rotating_log(self, tmp_path, component_tests_config):
         log_dir = tmp_path / "logs"
         additional_config = {
-            # On Darwin cloudflared service defaults to run classic tunnel command
+            # On Darwin cinatunnel service defaults to run classic tunnel command
             "hello-world": True,
             "loglevel": "debug",
             "log-directory": str(log_dir),
@@ -84,7 +84,7 @@ class TestServiceMode:
 
     @skip_on_ci("we can't run sudo command on CI")
     @select_platform("Linux")
-    @pytest.mark.skipif(os.path.exists("/etc/cloudflared/config.yml"),
+    @pytest.mark.skipif(os.path.exists("/etc/cinatunnel/config.yml"),
                         reason=f"There is already a config file in default path")
     def test_sysv_service_log_to_file(self, tmp_path, component_tests_config):
         log_file = tmp_path / test_logging.default_log_file
@@ -101,7 +101,7 @@ class TestServiceMode:
 
     @skip_on_ci("we can't run sudo command on CI")
     @select_platform("Linux")
-    @pytest.mark.skipif(os.path.exists("/etc/cloudflared/config.yml"),
+    @pytest.mark.skipif(os.path.exists("/etc/cinatunnel/config.yml"),
                         reason=f"There is already a config file in default path")
     def test_sysv_service_rotating_log(self, tmp_path, component_tests_config):
         log_dir = tmp_path / "logs"
@@ -120,7 +120,7 @@ class TestServiceMode:
 
     @skip_on_ci("we can't run sudo command on CI")
     @select_platform("Linux")
-    @pytest.mark.skipif(os.path.exists("/etc/cloudflared/config.yml"),
+    @pytest.mark.skipif(os.path.exists("/etc/cinatunnel/config.yml"),
                         reason=f"There is already a config file in default path")
     def test_sysv_service_with_token(self, tmp_path, component_tests_config):
         additional_config = {
@@ -132,7 +132,7 @@ class TestServiceMode:
         # service install doesn't install the config file but in this case we want to use some default settings
         # so we write the base config without the tunnel credentials and ID
         config_path = write_config(tmp_path, config.base_config())
-        subprocess.run(["sudo", "cp", config_path, "/etc/cloudflared/config.yml"], check=True)
+        subprocess.run(["sudo", "cp", config_path, "/etc/cinatunnel/config.yml"], check=True)
 
         self.sysv_service_scenario(config, tmp_path, use_token=True)
 
@@ -143,8 +143,8 @@ class TestServiceMode:
             if extra_assertions is not None:
                 extra_assertions()
 
-        # Service install copies config file to /etc/cloudflared/config.yml
-        subprocess.run(["sudo", "rm", "/etc/cloudflared/config.yml"])
+        # Service install copies config file to /etc/cinatunnel/config.yml
+        subprocess.run(["sudo", "rm", "/etc/cinatunnel/config.yml"])
         self.sysv_cmd("status", success=False)
 
     @contextmanager
@@ -155,21 +155,21 @@ class TestServiceMode:
             args.append(config.get_token())
 
         try:
-            service = start_cloudflared(
+            service = start_cinatunnel(
                 tmp_path, config, cfd_args=args, cfd_pre_args=[], capture_output=False, root=root, skip_config_flag=use_token)
             yield service
         finally:
-            start_cloudflared(
+            start_cinatunnel(
                 tmp_path, config, cfd_args=["service", "uninstall"], cfd_pre_args=[], capture_output=False, root=root, skip_config_flag=use_token)
 
     def launchctl_cmd(self, action, success=True):
         cmd = subprocess.run(
-            ["launchctl", action, "com.cloudflare.cloudflared"], check=success)
+            ["launchctl", action, "com.cinagroup.cinatunnel"], check=success)
         if not success:
             assert cmd.returncode != 0, f"Expect {cmd.args} to fail, but it succeed"
 
     def sysv_cmd(self, action, success=True):
         cmd = subprocess.run(
-            ["sudo", "service", "cloudflared", action], check=success)
+            ["sudo", "service", "cinatunnel", action], check=success)
         if not success:
             assert cmd.returncode != 0, f"Expect {cmd.args} to fail, but it succeed"

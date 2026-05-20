@@ -12,7 +12,7 @@ import (
 	"github.com/quic-go/quic-go"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/connection/dialopts"
+	"github.com/cinagroup/cinatunnel/connection/dialopts"
 )
 
 var (

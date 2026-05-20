@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/config"
+	"github.com/cinagroup/cinatunnel/config"
 )
 
 func Test_rule_matches(t *testing.T) {
@@ -36,22 +36,22 @@ func Test_rule_matches(t *testing.T) {
 		{
 			name: "Unicode hostname with unicode request, pass",
 			rule: Rule{
-				Hostname:         "môô.cloudflare.com",
-				punycodeHostname: "xn--m-xgaa.cloudflare.com",
+				Hostname:         "môô.cina.com",
+				punycodeHostname: "xn--m-xgaa.cina.com",
 			},
 			args: args{
-				requestURL: MustParseURL(t, "https://môô.cloudflare.com"),
+				requestURL: MustParseURL(t, "https://môô.cina.com"),
 			},
 			want: true,
 		},
 		{
 			name: "Unicode hostname with punycode request, pass",
 			rule: Rule{
-				Hostname:         "môô.cloudflare.com",
-				punycodeHostname: "xn--m-xgaa.cloudflare.com",
+				Hostname:         "môô.cina.com",
+				punycodeHostname: "xn--m-xgaa.cina.com",
 			},
 			args: args{
-				requestURL: MustParseURL(t, "https://xn--m-xgaa.cloudflare.com"),
+				requestURL: MustParseURL(t, "https://xn--m-xgaa.cina.com"),
 			},
 			want: true,
 		},

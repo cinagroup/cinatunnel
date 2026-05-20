@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	baseStoreURL  = "https://login.cloudflareaccess.org/"
-	fedStoreURL   = "https://login.fed.cloudflareaccess.org/"
+	baseStoreURL  = "https://login.cinaaccess.org/"
+	fedStoreURL   = "https://login.fed.cinaaccess.org/"
 	clientTimeout = time.Second * 60
 )
 
@@ -30,7 +30,7 @@ const (
 // If urlFilePath is non-empty, the generated auth URL is written to that path so
 // other waiting processes can display it to the user. Pass "" to skip.
 func RunTransfer(transferURL *url.URL, appAUD, resourceName, key, value string, shouldEncrypt bool, useHostOnly bool, autoClose bool, fedramp bool, log *zerolog.Logger, urlFilePath string) ([]byte, error) {
-	encrypterClient, err := NewEncrypter("cloudflared_priv.pem", "cloudflared_pub.pem")
+	encrypterClient, err := NewEncrypter("cinatunnel_priv.pem", "cinatunnel_pub.pem")
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func RunTransfer(transferURL *url.URL, appAUD, resourceName, key, value string, 
 	// See AUTH-1423 for why we use stderr (the way git wraps ssh)
 	err = OpenBrowser(requestURL)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Please open the following URL and log in with your Cloudflare account:\n\n%s\n\nLeave cloudflared running to download the %s automatically.\n", requestURL, resourceName)
+		fmt.Fprintf(os.Stderr, "Please open the following URL and log in with your Cina account:\n\n%s\n\nLeave cinatunnel running to download the %s automatically.\n", requestURL, resourceName)
 	} else {
 		fmt.Fprintf(os.Stderr, "A browser window should have opened at the following URL:\n\n%s\n\nIf the browser failed to open, please visit the URL above directly in your browser.\n", requestURL)
 	}

@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudflare/cloudflared/watcher"
+	"github.com/cinagroup/cinatunnel/watcher"
 )
 
 type mockNotifier struct {

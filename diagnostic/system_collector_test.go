@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/diagnostic"
+	"github.com/cinagroup/cinatunnel/diagnostic"
 )
 
 func TestParseMemoryInformationFromKV(t *testing.T) {
@@ -361,7 +361,7 @@ func TestParseDiskVolumeInformationOutput(t *testing.T) {
 overlay                59G   19G   38G  33% /
 tmpfs                  64M     0   64M   0% /dev
 shm                    64M     0   64M   0% /dev/shm
-/run/host_mark/Users  461G  266G  195G  58% /tmp/cloudflared
+/run/host_mark/Users  461G  266G  195G  58% /tmp/cinatunnel
 /dev/vda1              59G   19G   38G  33% /etc/hosts
 tmpfs                 3.9G     0  3.9G   0% /sys/firmware
 `
@@ -370,7 +370,7 @@ tmpfs                 3.9G     0  3.9G   0% /sys/firmware
 overlay               61202244  18881444  39179476  33% /
 tmpfs                    65536         0     65536   0% /dev
 shm                      65536         0     65536   0% /dev/shm
-/run/host_mark/Users 482797652 278648468 204149184  58% /tmp/cloudflared
+/run/host_mark/Users 482797652 278648468 204149184  58% /tmp/cinatunnel
 /dev/vda1             61202244  18881444  39179476  33% /etc/hosts
 tmpfs                  4014428         0   4014428   0% /sys/firmware`
 	missingFields := ` DeviceID        Size

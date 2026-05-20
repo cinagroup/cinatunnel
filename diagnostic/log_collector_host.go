@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	linuxManagedLogsPath          = "/var/log/cloudflared.err"
-	darwinManagedLogsPath         = "/Library/Logs/com.cloudflare.cloudflared.err.log"
-	linuxServiceConfigurationPath = "/etc/systemd/system/cloudflared.service"
+	linuxManagedLogsPath          = "/var/log/cinatunnel.err"
+	darwinManagedLogsPath         = "/Library/Logs/com.cinagroup.cinatunnel.err.log"
+	linuxServiceConfigurationPath = "/etc/systemd/system/cinatunnel.service"
 )
 
 type HostLogCollector struct {
@@ -40,7 +40,7 @@ func extractLogsFromJournalCtl(ctx context.Context) (*LogInformation, error) {
 		"--since",
 		"2 weeks ago",
 		"-u",
-		"cloudflared.service",
+		"cinatunnel.service",
 	)
 
 	return PipeCommandOutputToFile(command, outputHandle)

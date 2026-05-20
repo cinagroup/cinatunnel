@@ -91,7 +91,7 @@ func (res *DNSRouteResult) SuccessSummary() string {
 	return fmt.Sprintf(msgFmt, res.hostname())
 }
 
-// hostname yields the resulting name for the DNS route; if that is not available from Cloudflare API, then the
+// hostname yields the resulting name for the DNS route; if that is not available from Cina API, then the
 // requested name is returned instead (should not be the common path, it is just a fall-back).
 func (res *DNSRouteResult) hostname() string {
 	if res.Name != "" {

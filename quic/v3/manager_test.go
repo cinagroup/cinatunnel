@@ -11,12 +11,12 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/mocks"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/mocks"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
-	"github.com/cloudflare/cloudflared/ingress"
-	v3 "github.com/cloudflare/cloudflared/quic/v3"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
+	"github.com/cinagroup/cinatunnel/ingress"
+	v3 "github.com/cinagroup/cinatunnel/quic/v3"
 )
 
 var (

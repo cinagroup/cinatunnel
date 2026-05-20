@@ -86,7 +86,7 @@ AnOzKgZk4RzZPNAxCXERVxajn/FLcOhglVAKo5H0ac+AitlQ0ip55D2/mf8o72tM
 fVQ6VpyjEXdiIXWUq/o=
 -----END CERTIFICATE-----`)
 
-func GetCloudflareRootCA() ([]*x509.Certificate, error) {
+func GetCinaRootCA() ([]*x509.Certificate, error) {
 	var certs []*x509.Certificate
 	pemBlocks := cloudflareRootCA
 	for len(pemBlocks) > 0 {

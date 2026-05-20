@@ -8,8 +8,8 @@ from websockets.client import connect, WebSocketClientProtocol
 from conftest import CfdModes
 from constants import MAX_RETRIES, BACKOFF_SECS
 from retrying import retry
-from cli import CloudflaredCli
-from util import LOGGER, start_cloudflared, write_config, wait_tunnel_ready
+from cli import CinatunnelCli
+from util import LOGGER, start_cinatunnel, write_config, wait_tunnel_ready
 
 class TestTail:
     @pytest.mark.asyncio
@@ -22,9 +22,9 @@ class TestTail:
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
         config_path = write_config(tmp_path, config.full_config)
-        with start_cloudflared(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(), require_min_connections=1)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             url = cfd_cli.get_management_wsurl("logs", config, config_path, resource="logs")
             async with connect(url, open_timeout=5, close_timeout=3) as websocket:
                 await websocket.send('{"type": "start_streaming"}')
@@ -41,9 +41,9 @@ class TestTail:
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
         config_path = write_config(tmp_path, config.full_config)
-        with start_cloudflared(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(), require_min_connections=1)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             url = cfd_cli.get_management_wsurl("logs", config, config_path, resource="logs")
             async with connect(url, open_timeout=5, close_timeout=5) as websocket:
                 # send start_streaming
@@ -68,9 +68,9 @@ class TestTail:
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
         config_path = write_config(tmp_path, config.full_config)
-        with start_cloudflared(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(), require_min_connections=1)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             url = cfd_cli.get_management_wsurl("logs", config, config_path, resource="logs")
             async with connect(url, open_timeout=5, close_timeout=5) as websocket:
                 # send start_streaming with tcp logs only
@@ -95,9 +95,9 @@ class TestTail:
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
         config_path = write_config(tmp_path, config.full_config)
-        with start_cloudflared(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(), require_min_connections=1)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             url = cfd_cli.get_management_wsurl("logs", config, config_path, resource="logs")
             async with connect(url, open_timeout=5, close_timeout=5) as websocket:
                 # send start_streaming with info logs only
@@ -123,9 +123,9 @@ class TestTail:
         config = component_tests_config(cfd_mode=CfdModes.NAMED, provide_ingress=False)
         LOGGER.debug(config)
         config_path = write_config(tmp_path, config.full_config)
-        with start_cloudflared(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
+        with start_cinatunnel(tmp_path, config, cfd_args=["run", "--hello-world"], new_process=True):
             wait_tunnel_ready(tunnel_url=config.get_url(), require_min_connections=1)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             url = cfd_cli.get_management_wsurl("logs", config, config_path, resource="logs")
             task = asyncio.ensure_future(start_streaming_to_be_remotely_closed(url))
             override_task = asyncio.ensure_future(start_streaming_override(url))

@@ -44,7 +44,7 @@ func createDefaultConfig() Config {
 	const RollingMaxSize = 1    // Mb
 	const RollingMaxBackups = 5 // files
 	const RollingMaxAge = 0     // Keep forever
-	const defaultLogFilename = "cloudflared.log"
+	const defaultLogFilename = "cinatunnel.log"
 
 	return Config{
 		ConsoleConfig: &ConsoleConfig{

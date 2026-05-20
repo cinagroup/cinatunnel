@@ -1,11 +1,9 @@
-//go:build fips
-
+// Package fips provides FIPS compliance checks.
+// Stub implementation for non-FIPS builds.
 package fips
 
-import (
-	_ "crypto/tls/fipsonly"
-)
-
+// IsFipsEnabled returns true when running in FIPS-compliant mode.
+// This stub always returns false.
 func IsFipsEnabled() bool {
-	return true
+	return false
 }

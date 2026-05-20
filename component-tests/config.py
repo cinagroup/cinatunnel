@@ -12,7 +12,7 @@ from constants import METRICS_PORT
 
 @dataclass(frozen=True)
 class BaseConfig:
-    cloudflared_binary: str
+    cinatunnel_binary: str
     no_autoupdate: bool = True
     metrics: str = f'localhost:{METRICS_PORT}'
 

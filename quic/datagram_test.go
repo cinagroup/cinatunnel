@@ -24,8 +24,8 @@ import (
 	"golang.org/x/net/ipv4"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/cloudflare/cloudflared/packet"
-	"github.com/cloudflare/cloudflared/tracing"
+	"github.com/cinagroup/cinatunnel/packet"
+	"github.com/cinagroup/cinatunnel/tracing"
 )
 
 var (
@@ -174,7 +174,7 @@ func testDatagram(t *testing.T, version uint8, sessionToPayloads []*packet.Sessi
 	})
 
 	largePayload := make([]byte, MaxDatagramFrameSize)
-	// Run cloudflared side of datagram muxer
+	// Run cinatunnel side of datagram muxer
 	errGroup.Go(func() error {
 		tlsClientConfig := &tls.Config{
 			InsecureSkipVerify: true,

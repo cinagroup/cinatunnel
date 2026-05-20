@@ -16,7 +16,7 @@ import (
 
 const (
 	defaultScheme   = "http"
-	accessDomain    = "cloudflareaccess.com"
+	accessDomain    = "cinaaccess.com"
 	accessCertPath  = "/cdn-cgi/access/certs"
 	accessJwtHeader = "Cf-access-jwt-assertion"
 )
@@ -68,7 +68,7 @@ func ValidateHostname(hostname string) (string, error) {
 //
 //	ValidateUrl("localhost:8080/api/") => "http://localhost:8080/api/"
 //
-// This is arguably a bug, but changing it might break some cloudflared users.
+// This is arguably a bug, but changing it might break some cinatunnel users.
 func ValidateUrl(originUrl string) (*url.URL, error) {
 	urlStr, err := validateUrlString(originUrl)
 	if err != nil {
@@ -152,7 +152,7 @@ func validateScheme(scheme string) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("Currently Cloudflare Tunnel does not support %s protocol.", scheme)
+	return fmt.Errorf("Currently CinaTunnel does not support %s protocol.", scheme)
 }
 
 func validateIP(scheme, host, port string) (string, error) {
@@ -168,7 +168,7 @@ func validateIP(scheme, host, port string) (string, error) {
 	return fmt.Sprintf("%s://%s", scheme, host), nil
 }
 
-// Access checks if a JWT from Cloudflare Access is valid.
+// Access checks if a JWT from Cina Access is valid.
 type Access struct {
 	verifier *oidc.IDTokenVerifier
 }
@@ -184,7 +184,7 @@ func NewAccessValidator(ctx context.Context, domain, issuer, applicationAUD stri
 		return nil, err
 	}
 
-	// An issuerURL from Cloudflare Access will always use HTTPS.
+	// An issuerURL from Cina Access will always use HTTPS.
 	issuerURL = strings.Replace(issuerURL, "http:", "https:", 1)
 
 	keySet := oidc.NewRemoteKeySet(ctx, domainURL+accessCertPath)
@@ -205,7 +205,7 @@ func (a *Access) Validate(ctx context.Context, jwt string) error {
 	}
 
 	if !strings.HasSuffix(token.Issuer, accessDomain) {
-		return fmt.Errorf("token has non-cloudflare issuer of %s: %s", token.Issuer, jwt)
+		return fmt.Errorf("token has non-cina issuer of %s: %s", token.Issuer, jwt)
 	}
 
 	return nil

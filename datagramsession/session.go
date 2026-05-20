@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/packet"
+	"github.com/cinagroup/cinatunnel/packet"
 )
 
 const (
@@ -37,7 +37,7 @@ type ErrVithVariableSeverity interface {
 // - Manager receives datagrams from receiveChan and calls the transportToDst method of the Session to send to origin
 // - Datagrams from origin are read from conn and Send to transport using the transportSender callback. Transport will return them to eyeball
 // When the destination is eyeball:
-// - Datagrams from eyeball are read from conn and Send to transport. Transport will send them to cloudflared using the transportSender callback.
+// - Datagrams from eyeball are read from conn and Send to transport. Transport will send them to cinatunnel using the transportSender callback.
 // - Manager receives datagrams from receiveChan and calls the transportToDst method of the Session to send to the eyeball
 type Session struct {
 	ID       uuid.UUID

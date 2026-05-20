@@ -107,9 +107,9 @@ func TestDeserializeMalformed(t *testing.T) {
 
 func TestIsControlResponseHeader(t *testing.T) {
 	controlResponseHeaders := []string{
-		// Anything that begins with cf-int-, cf-cloudflared- or cf-proxy-
+		// Anything that begins with cf-int-, cf-cinatunnel- or cf-proxy-
 		"cf-int-sample-header",
-		"cf-cloudflared-sample-header",
+		"cf-cinatunnel-sample-header",
 		"cf-proxy-sample-header",
 		// Any http2 pseudoheader
 		":sample-pseudo-header",
@@ -126,7 +126,7 @@ func TestIsNotControlResponseHeader(t *testing.T) {
 		"another-sample-header",
 		"upgrade",
 		"connection",
-		"cf-whatever", // On the response path, we only want to filter cf-int- and cf-cloudflared-
+		"cf-whatever", // On the response path, we only want to filter cf-int- and cf-cinatunnel-
 	}
 
 	for _, header := range notControlResponseHeaders {

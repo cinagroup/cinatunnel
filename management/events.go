@@ -69,14 +69,14 @@ type EventLog struct {
 }
 
 // LogEventType is the way that logging messages are able to be filtered.
-// Example: assigning LogEventType.Cloudflared to a zerolog event will allow the client to filter for only
-// the Cloudflared-related events.
+// Example: assigning LogEventType.Cinatunnel to a zerolog event will allow the client to filter for only
+// the Cinatunnel-related events.
 type LogEventType int8
 
 const (
-	// Cloudflared events are significant to cloudflared operations like connection state changes.
-	// Cloudflared is also the default event type for any events that haven't been separated into a proper event type.
-	Cloudflared LogEventType = iota
+	// Cinatunnel events are significant to cinatunnel operations like connection state changes.
+	// Cinatunnel is also the default event type for any events that haven't been separated into a proper event type.
+	Cinatunnel LogEventType = iota
 	HTTP
 	TCP
 	UDP
@@ -84,8 +84,8 @@ const (
 
 func ParseLogEventType(s string) (LogEventType, bool) {
 	switch s {
-	case "cloudflared":
-		return Cloudflared, true
+	case "cinatunnel":
+		return Cinatunnel, true
 	case "http":
 		return HTTP, true
 	case "tcp":
@@ -98,8 +98,8 @@ func ParseLogEventType(s string) (LogEventType, bool) {
 
 func (l LogEventType) String() string {
 	switch l {
-	case Cloudflared:
-		return "cloudflared"
+	case Cinatunnel:
+		return "cinatunnel"
 	case HTTP:
 		return "http"
 	case TCP:
@@ -129,7 +129,7 @@ func (e *LogEventType) UnmarshalJSON(data []byte) error {
 
 // LogLevel corresponds to the zerolog logging levels
 // "panic", "fatal", and "trace" are exempt from this list as they are rarely used and, at least
-// the first two are limited to failure conditions that lead to cloudflared shutting down.
+// the first two are limited to failure conditions that lead to cinatunnel shutting down.
 type LogLevel int8
 
 const (

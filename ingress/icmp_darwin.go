@@ -20,8 +20,8 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"golang.org/x/net/icmp"
 
-	"github.com/cloudflare/cloudflared/packet"
-	"github.com/cloudflare/cloudflared/tracing"
+	"github.com/cinagroup/cinatunnel/packet"
+	"github.com/cinagroup/cinatunnel/tracing"
 )
 
 type icmpProxy struct {

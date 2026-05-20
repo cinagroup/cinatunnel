@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/management"
+	"github.com/cinagroup/cinatunnel/management"
 )
 
 const (
@@ -48,7 +48,7 @@ func (o *Observer) RegisterSink(sink EventSink) {
 
 func (o *Observer) logConnecting(connIndex uint8, address net.IP, protocol Protocol) {
 	o.log.Debug().
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		Uint8(LogFieldConnIndex, connIndex).
 		IPAddr(LogFieldIPAddress, address).
 		Str(LogFieldProtocol, protocol.String()).
@@ -57,7 +57,7 @@ func (o *Observer) logConnecting(connIndex uint8, address net.IP, protocol Proto
 
 func (o *Observer) logConnected(connectionID uuid.UUID, connIndex uint8, location string, address net.IP, protocol Protocol) {
 	o.log.Info().
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		Str(LogFieldConnectionID, connectionID.String()).
 		Uint8(LogFieldConnIndex, connIndex).
 		Str(LogFieldLocation, location).

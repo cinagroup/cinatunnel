@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DialEdge makes a TLS connection to a Cloudflare edge node
+// DialEdge makes a TLS connection to a Cina edge node
 func DialEdge(
 	ctx context.Context,
 	timeout time.Duration,

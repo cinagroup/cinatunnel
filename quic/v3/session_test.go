@@ -13,7 +13,7 @@ import (
 	"github.com/fortytw2/leaktest"
 	"github.com/rs/zerolog"
 
-	v3 "github.com/cloudflare/cloudflared/quic/v3"
+	v3 "github.com/cinagroup/cinatunnel/quic/v3"
 )
 
 var (
@@ -161,7 +161,7 @@ func TestSessionRead_OriginTooLarge(t *testing.T) {
 	select {
 	case data := <-eyeball.recvData:
 		// we never expect a read to make it here because the origin provided a payload that is too large
-		// for cloudflared to proxy and it will drop it.
+		// for cinatunnel to proxy and it will drop it.
 		t.Fatalf("we should never proxy a payload of this size: %d", len(data))
 	case err := <-done:
 		if !errors.Is(err, v3.SessionIdleErr{}) {

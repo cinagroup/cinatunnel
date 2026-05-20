@@ -17,24 +17,24 @@ import (
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/cloudflare/cloudflared/client"
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/connection/dialopts"
-	cfdcrypto "github.com/cloudflare/cloudflared/crypto"
-	"github.com/cloudflare/cloudflared/edgediscovery"
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
-	"github.com/cloudflare/cloudflared/features"
-	"github.com/cloudflare/cloudflared/fips"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/ingress/origins"
-	"github.com/cloudflare/cloudflared/management"
-	"github.com/cloudflare/cloudflared/orchestration"
-	quicpogs "github.com/cloudflare/cloudflared/quic"
-	v3 "github.com/cloudflare/cloudflared/quic/v3"
-	"github.com/cloudflare/cloudflared/retry"
-	"github.com/cloudflare/cloudflared/signal"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	"github.com/cloudflare/cloudflared/tunnelstate"
+	"github.com/cinagroup/cinatunnel/client"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/connection/dialopts"
+	cfdcrypto "github.com/cinagroup/cinatunnel/crypto"
+	"github.com/cinagroup/cinatunnel/edgediscovery"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/features"
+	"github.com/cinagroup/cinatunnel/fips"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/ingress/origins"
+	"github.com/cinagroup/cinatunnel/management"
+	"github.com/cinagroup/cinatunnel/orchestration"
+	quicpogs "github.com/cinagroup/cinatunnel/quic"
+	v3 "github.com/cinagroup/cinatunnel/quic/v3"
+	"github.com/cinagroup/cinatunnel/retry"
+	"github.com/cinagroup/cinatunnel/signal"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/tunnelstate"
 )
 
 const (
@@ -221,7 +221,7 @@ func (e *EdgeTunnelServer) Serve(ctx context.Context, connIndex uint8, protocolF
 	}
 
 	logger := e.config.Log.With().
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		IPAddr(connection.LogFieldIPAddress, addr.UDP.IP).
 		Uint8(connection.LogFieldConnIndex, connIndex).
 		Logger()
@@ -328,12 +328,12 @@ func selectNextProtocol(
 
 	if protocolBackoff.ReachedMaxRetries() || (hasFallback && isQuicBroken) {
 		if isQuicBroken {
-			connLog.Warn().Msg("If this log occurs persistently, and cloudflared is unable to connect to " +
-				"Cloudflare Network with `quic` protocol, then most likely your machine/network is getting its egress " +
+			connLog.Warn().Msg("If this log occurs persistently, and cinatunnel is unable to connect to " +
+				"Cina Network with `quic` protocol, then most likely your machine/network is getting its egress " +
 				"UDP to port 7844 (or others) blocked or dropped. Make sure to allow egress connectivity as per " +
-				"https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ports-and-ips/\n" +
+				"https://github.com/cinagroup/cinatunnel\n" +
 				"If you are using private routing to this Tunnel, then ICMP, UDP (and Private DNS Resolution) will not work " +
-				"unless your cloudflared can connect with Cloudflare Network with `quic`.")
+				"unless your cinatunnel can connect with Cina Network with `quic`.")
 		}
 
 		fallback, hasFallback := selector.Fallback()
@@ -487,7 +487,7 @@ func (e *EdgeTunnelServer) serveConnection(
 
 		edgeConn, err := edgediscovery.DialEdge(ctx, dialTimeout, tlsConfig, addr.TCP, e.edgeBindAddr)
 		if err != nil {
-			connLog.ConnAwareLogger().Err(err).Msg("Unable to establish connection with Cloudflare edge")
+			connLog.ConnAwareLogger().Err(err).Msg("Unable to establish connection with Cina edge")
 			return err, true
 		}
 

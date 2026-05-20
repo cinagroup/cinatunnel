@@ -108,21 +108,21 @@ func renderActions(r Report) string {
 func summaryLine(r Report) string {
 	switch {
 	case r.hasHardFail():
-		return "SUMMARY: Environment has critical failures. cloudflared may not be able to establish a tunnel."
+		return "SUMMARY: Environment has critical failures. cinatunnel may not be able to establish a tunnel."
 	case r.hasWarn():
 		if r.SuggestedProtocol == nil {
 			return "SUMMARY: Environment ready with degraded transport."
 		}
 
 		protocol := r.SuggestedProtocol.String()
-		return fmt.Sprintf("SUMMARY: Environment ready with degraded transport. cloudflared will proceed using '%s'.", protocol)
+		return fmt.Sprintf("SUMMARY: Environment ready with degraded transport. cinatunnel will proceed using '%s'.", protocol)
 	default:
 		if r.SuggestedProtocol == nil {
 			return "SUMMARY: Environment is healthy."
 		}
 
 		protocol := r.SuggestedProtocol.String()
-		return fmt.Sprintf("SUMMARY: Environment is healthy. cloudflared will use '%s' as primary protocol.", protocol)
+		return fmt.Sprintf("SUMMARY: Environment is healthy. cinatunnel will use '%s' as primary protocol.", protocol)
 	}
 }
 

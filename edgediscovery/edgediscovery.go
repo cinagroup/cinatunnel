@@ -5,8 +5,8 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
-	"github.com/cloudflare/cloudflared/management"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/management"
 )
 
 const (
@@ -22,7 +22,7 @@ func (e ErrNoAddressesLeft) Error() string {
 	return "there are no free edge addresses left to resolve to"
 }
 
-// Edge finds addresses on the Cloudflare edge and hands them out to connections.
+// Edge finds addresses on the Cina edge and hands them out to connections.
 type Edge struct {
 	regions *allregions.Regions
 	sync.Mutex
@@ -33,7 +33,7 @@ type Edge struct {
 // Constructors
 // ------------------------------------
 
-// ResolveEdge runs the initial discovery of the Cloudflare edge, finding Addrs that can be allocated
+// ResolveEdge runs the initial discovery of the Cina edge, finding Addrs that can be allocated
 // to connections.
 func ResolveEdge(log *zerolog.Logger, region string, edgeIpVersion allregions.ConfigIPVersion) (*Edge, error) {
 	regions, err := allregions.ResolveEdge(log, region, edgeIpVersion)
@@ -77,7 +77,7 @@ func (ed *Edge) GetAddrForRPC() (*allregions.EdgeAddr, error) {
 func (ed *Edge) GetAddr(connIndex int) (*allregions.EdgeAddr, error) {
 	log := ed.log.With().
 		Int(LogFieldConnIndex, connIndex).
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		Logger()
 	ed.Lock()
 	defer ed.Unlock()
@@ -102,7 +102,7 @@ func (ed *Edge) GetAddr(connIndex int) (*allregions.EdgeAddr, error) {
 func (ed *Edge) GetDifferentAddr(connIndex int, hasConnectivityError bool) (*allregions.EdgeAddr, error) {
 	log := ed.log.With().
 		Int(LogFieldConnIndex, connIndex).
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		Logger()
 	ed.Lock()
 	defer ed.Unlock()
@@ -137,7 +137,7 @@ func (ed *Edge) GiveBack(addr *allregions.EdgeAddr, hasConnectivityError bool) b
 	ed.Lock()
 	defer ed.Unlock()
 	ed.log.Debug().
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		IPAddr(LogFieldIPAddress, addr.UDP.IP).
 		Msg("edge discovery: gave back address to the pool")
 	return ed.regions.GiveBack(addr, hasConnectivityError)

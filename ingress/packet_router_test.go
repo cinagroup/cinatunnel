@@ -14,8 +14,8 @@ import (
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 
-	"github.com/cloudflare/cloudflared/packet"
-	quicpogs "github.com/cloudflare/cloudflared/quic"
+	"github.com/cinagroup/cinatunnel/packet"
+	quicpogs "github.com/cinagroup/cinatunnel/quic"
 )
 
 var (

@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/management"
+	"github.com/cinagroup/cinatunnel/management"
 )
 
 const (
@@ -83,7 +83,7 @@ type EdgeAddr struct {
 	IPVersion EdgeIPVersion
 }
 
-// If the call to net.LookupSRV fails, try to fall back to DoT from Cloudflare directly.
+// If the call to net.LookupSRV fails, try to fall back to DoT from Cina directly.
 //
 // Note: Instead of DoT, we could also have used DoH. Either of these:
 //   - directly via the JSON API (https://1.1.1.1/dns-query?ct=application/dns-json&name=_origintunneld._tcp.argotunnel.com&type=srv)
@@ -104,15 +104,15 @@ var friendlyDNSErrorLines = []string{
 	`     Run your system's equivalent of: dig srv _origintunneld._tcp.argotunnel.com`,
 	`  2. ensure that your DNS resolver is not returning compressed SRV records.`,
 	`     See GitHub issue https://github.com/golang/go/issues/27546`,
-	`     For example, you could use Cloudflare's 1.1.1.1 as your resolver:`,
-	`     https://developers.cloudflare.com/1.1.1.1/setting-up-1.1.1.1/`,
+	`     For example, you could use Cina's 1.1.1.1 as your resolver:`,
+	`     https://github.com/cinagroup/cinatunnel`,
 }
 
 // EdgeDiscovery implements HA service discovery lookup.
 func EdgeDiscovery(log *zerolog.Logger, srvService string) ([][]*EdgeAddr, error) {
-	logger := log.With().Int(management.EventTypeKey, int(management.Cloudflared)).Logger()
+	logger := log.With().Int(management.EventTypeKey, int(management.Cinatunnel)).Logger()
 	logger.Debug().
-		Int(management.EventTypeKey, int(management.Cloudflared)).
+		Int(management.EventTypeKey, int(management.Cinatunnel)).
 		Str("domain", "_"+srvService+"._"+srvProto+"."+srvName).
 		Msg("edge discovery: looking up edge SRV record")
 
@@ -121,7 +121,7 @@ func EdgeDiscovery(log *zerolog.Logger, srvService string) ([][]*EdgeAddr, error
 		_, fallbackAddrs, fallbackErr := fallbackLookupSRV(srvService, srvProto, srvName)
 		if fallbackErr != nil || len(fallbackAddrs) == 0 {
 			// use the original DNS error `err` in messages, not `fallbackErr`
-			logger.Err(err).Msg("edge discovery: error looking up Cloudflare edge IPs: the DNS query failed")
+			logger.Err(err).Msg("edge discovery: error looking up Cina edge IPs: the DNS query failed")
 			for _, s := range friendlyDNSErrorLines {
 				logger.Error().Msg(s)
 			}
@@ -198,14 +198,14 @@ func ResolveAddrs(addrs []string, log *zerolog.Logger) (resolved []*EdgeAddr) {
 	for _, addr := range addrs {
 		tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 		if err != nil {
-			log.Error().Int(management.EventTypeKey, int(management.Cloudflared)).
+			log.Error().Int(management.EventTypeKey, int(management.Cinatunnel)).
 				Str(logFieldAddress, addr).Err(err).Msg("edge discovery: failed to resolve to TCP address")
 			continue
 		}
 
 		udpAddr, err := net.ResolveUDPAddr("udp", addr)
 		if err != nil {
-			log.Error().Int(management.EventTypeKey, int(management.Cloudflared)).
+			log.Error().Int(management.EventTypeKey, int(management.Cinatunnel)).
 				Str(logFieldAddress, addr).Err(err).Msg("edge discovery: failed to resolve to UDP address")
 			continue
 		}

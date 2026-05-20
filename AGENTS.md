@@ -1,6 +1,6 @@
-# Cloudflared
+# Cinatunnel
 
-Cloudflare's command-line tool and networking daemon written in Go.
+Cina's command-line tool and networking daemon written in Go.
 Production-grade tunneling and network connectivity services used by millions of
 developers and organizations worldwide.
 
@@ -13,7 +13,7 @@ developers and organizations worldwide.
 make test lint
 
 # Build for current platform
-make cloudflared
+make cinatunnel
 
 # Run all unit tests with coverage
 make test
@@ -30,16 +30,16 @@ go test -race ./...
 
 ```bash
 # Linux
-TARGET_OS=linux TARGET_ARCH=amd64 make cloudflared
+TARGET_OS=linux TARGET_ARCH=amd64 make cinatunnel
 
 # Windows
-TARGET_OS=windows TARGET_ARCH=amd64 make cloudflared
+TARGET_OS=windows TARGET_ARCH=amd64 make cinatunnel
 
 # macOS ARM64
-TARGET_OS=darwin TARGET_ARCH=arm64 make cloudflared
+TARGET_OS=darwin TARGET_ARCH=arm64 make cinatunnel
 
 # FIPS compliant build
-FIPS=true make cloudflared
+FIPS=true make cinatunnel
 ```
 
 ### Code Quality & Formatting
@@ -82,7 +82,7 @@ Notes on linting:
 
 - `crypto/`: Single source of truth for TLS curve preferences and other
   cryptographic primitives shared by every edge-facing transport. Import as
-  `cfdcrypto "github.com/cloudflare/cloudflared/crypto"` to avoid colliding
+  `cfdcrypto "github.com/cinagroup/cinatunnel/crypto"` to avoid colliding
   with the standard library's `crypto` package. Do NOT duplicate TLS curve
   or cipher selection logic in other packages.
 - `tlsconfig/`: Builds the base `*tls.Config` used for edge connections
@@ -277,7 +277,7 @@ type TunnelProperties struct {
 - Vendor dependencies for reproducible builds
 - Keep dependencies up-to-date and secure
 - Prefer standard library when possible
-- Cloudflared uses a fork of quic-go always check release notes before bumping
+- Cinatunnel uses a fork of quic-go always check release notes before bumping
   this dependency.
 
 ## Security Considerations

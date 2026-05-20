@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	MetricsNamespace = "cloudflared"
+	MetricsNamespace = "cinatunnel"
 	TunnelSubsystem  = "tunnel"
 	muxerSubsystem   = "muxer"
 	configSubsystem  = "config"
@@ -117,7 +117,7 @@ func initTunnelMetrics() *tunnelMetrics {
 			Namespace: MetricsNamespace,
 			Subsystem: TunnelSubsystem,
 			Name:      "user_hostnames_counts",
-			Help:      "Which user hostnames cloudflared is serving",
+			Help:      "Which user hostnames cinatunnel is serving",
 		},
 		[]string{"userHostname"},
 	)

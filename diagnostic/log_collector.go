@@ -27,7 +27,7 @@ func NewLogInformation(
 
 type LogCollector interface {
 	// This function is responsible for returning a path to a single file
-	// whose contents are the logs of a cloudflared instance.
+	// whose contents are the logs of a cinatunnel instance.
 	// A new file may be create by a LogCollector, thus, its the caller
 	// responsibility to remove the newly create file.
 	Collect(ctx context.Context) (*LogInformation, error)

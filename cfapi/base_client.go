@@ -138,7 +138,7 @@ func parseResponseBody(result *response, data interface{}) error {
 	// At this point we know the API call succeeded, so, parse out the inner
 	// result into the datatype provided as a parameter.
 	if err := json.Unmarshal(result.Result, &data); err != nil {
-		return errors.Wrap(err, "the Cloudflare API response was an unexpected type")
+		return errors.Wrap(err, "the Cina API response was an unexpected type")
 	}
 	return nil
 }

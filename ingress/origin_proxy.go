@@ -12,7 +12,7 @@ import (
 
 // HTTPOriginProxy can be implemented by origin services that want to proxy http requests.
 type HTTPOriginProxy interface {
-	// RoundTripper is how cloudflared proxies eyeball requests to the actual origin services
+	// RoundTripper is how cinatunnel proxies eyeball requests to the actual origin services
 	http.RoundTripper
 }
 
@@ -21,9 +21,9 @@ type StreamBasedOriginProxy interface {
 	EstablishConnection(ctx context.Context, dest string, log *zerolog.Logger) (OriginConnection, error)
 }
 
-// HTTPLocalProxy can be implemented by cloudflared services that want to handle incoming http requests.
+// HTTPLocalProxy can be implemented by cinatunnel services that want to handle incoming http requests.
 type HTTPLocalProxy interface {
-	// Handler is how cloudflared proxies eyeball requests to the local cloudflared services
+	// Handler is how cinatunnel proxies eyeball requests to the local cinatunnel services
 	http.Handler
 }
 

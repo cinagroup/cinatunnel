@@ -18,7 +18,7 @@ var (
 )
 
 // RequestID is the request-id-v2 identifier, it is used to distinguish between specific flows or sessions proxied
-// from the edge to cloudflared.
+// from the edge to cinatunnel.
 type RequestID uint128
 
 type uint128 struct {

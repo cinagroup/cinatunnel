@@ -72,7 +72,7 @@ func isTemporaryError(e error) bool {
 
 // NoopCapnpLogger provides a logger to discard all capnp rpc internal logging messages as
 // they are by default provided to stdout if no logger interface is provided. These logging
-// messages in cloudflared have typically not provided a high amount of pratical value
+// messages in cinatunnel have typically not provided a high amount of pratical value
 // as the messages are extremely verbose and don't provide a good insight into the message
 // contents or rpc method names.
 type noopCapnpLogger struct{}

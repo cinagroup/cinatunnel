@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/features"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/features"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 // Config captures the local client runtime configuration.

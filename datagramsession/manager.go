@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/management"
-	"github.com/cloudflare/cloudflared/packet"
+	"github.com/cinagroup/cinatunnel/management"
+	"github.com/cinagroup/cinatunnel/packet"
 )
 
 const (

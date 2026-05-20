@@ -47,25 +47,25 @@ def write_config(directory, config):
     return config_path
 
 
-def start_cloudflared(directory, config, cfd_args=["run"], cfd_pre_args=["tunnel"], new_process=False,
+def start_cinatunnel(directory, config, cfd_args=["run"], cfd_pre_args=["tunnel"], new_process=False,
                       allow_input=False, capture_output=True, root=False, skip_config_flag=False, expect_success=True):
 
     config_path = None
     if not skip_config_flag:
         config_path = write_config(directory, config.full_config)
 
-    cmd = cloudflared_cmd(config, config_path, cfd_args, cfd_pre_args, root)
+    cmd = cinatunnel_cmd(config, config_path, cfd_args, cfd_pre_args, root)
 
     if new_process:
-        return run_cloudflared_background(cmd, allow_input, capture_output)
+        return run_cinatunnel_background(cmd, allow_input, capture_output)
     # By setting check=True, it will raise an exception if the process exits with non-zero exit code
     return subprocess.run(cmd, check=expect_success, capture_output=capture_output)
 
-def cloudflared_cmd(config, config_path, cfd_args, cfd_pre_args, root):
+def cinatunnel_cmd(config, config_path, cfd_args, cfd_pre_args, root):
     cmd = []
     if root:
         cmd += ["sudo"]
-    cmd += [config.cloudflared_binary]
+    cmd += [config.cinatunnel_binary]
     cmd += cfd_pre_args
 
     if config_path is not None:
@@ -77,7 +77,7 @@ def cloudflared_cmd(config, config_path, cfd_args, cfd_pre_args, root):
 
 
 @contextmanager
-def run_cloudflared_background(cmd, allow_input, capture_output):
+def run_cinatunnel_background(cmd, allow_input, capture_output):
     output = subprocess.PIPE if capture_output else subprocess.DEVNULL
     stdin = subprocess.PIPE if allow_input else None
     cfd = None
@@ -88,7 +88,7 @@ def run_cloudflared_background(cmd, allow_input, capture_output):
         if cfd:
             cfd.terminate()
             if capture_output:
-                LOGGER.info(f"cloudflared log: {cfd.stderr.read()}")
+                LOGGER.info(f"cinatunnel log: {cfd.stderr.read()}")
     
 
 def get_quicktunnel_url():
@@ -107,7 +107,7 @@ def wait_tunnel_ready(tunnel_url=None, require_min_connections=1, cfd_logs=None)
         inner_wait_tunnel_ready(tunnel_url, require_min_connections)
     except Exception as e:
         if cfd_logs is not None:
-            _log_cloudflared_logs(cfd_logs)
+            _log_cinatunnel_logs(cfd_logs)
         raise e
 
 
@@ -127,7 +127,7 @@ def inner_wait_tunnel_ready(tunnel_url=None, require_min_connections=1):
         if tunnel_url is not None:
             send_request(s, tunnel_url, True)
 
-def _log_cloudflared_logs(cfd_logs):
+def _log_cinatunnel_logs(cfd_logs):
     log_file = cfd_logs
     if os.path.isdir(cfd_logs):
         files = os.listdir(cfd_logs)
@@ -135,7 +135,7 @@ def _log_cloudflared_logs(cfd_logs):
             return
         log_file = os.path.join(cfd_logs, files[0])
     with open(log_file, "r") as f:
-        LOGGER.warning("Cloudflared Tunnel was not ready:")
+        LOGGER.warning("Cinatunnel was not ready:")
         for line in f.readlines():
             LOGGER.warning(line)
 
@@ -149,7 +149,7 @@ def check_tunnel_not_connected():
         assert resp.status_code == 503, f"Expect {url} returns 503, got {resp.status_code}"
         assert resp.json()[
             "readyConnections"] == 0, "Expected all connections to be terminated (pending reconnect)"
-    # cloudflared might already terminate
+    # cinatunnel might already terminate
     except requests.exceptions.ConnectionError as e:
         LOGGER.warning(f"Failed to connect to {url}, error: {e}")
 
@@ -160,7 +160,7 @@ def get_tunnel_connector_id():
     try:
         resp = requests.get(url, timeout=1)
         return resp.json()["connectorId"]
-    # cloudflared might already terminated
+    # cinatunnel might already terminated
     except requests.exceptions.ConnectionError as e:
         LOGGER.warning(f"Failed to connect to {url}, error: {e}")
 

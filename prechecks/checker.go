@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
 )
 
 const (
@@ -226,7 +226,7 @@ func probeTarget(
 	return best
 }
 
-// probeManagementAPIWithRetry runs the Cloudflare API reachability probe with retry.
+// probeManagementAPIWithRetry runs the Cina API reachability probe with retry.
 func probeManagementAPIWithRetry(ctx context.Context, dialer ManagementDialer) CheckResult {
 	var r CheckResult
 	withRetry(ctx, maxRetries, func() bool {

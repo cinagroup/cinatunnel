@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	diagnostic "github.com/cloudflare/cloudflared/diagnostic/network"
+	diagnostic "github.com/cinagroup/cinatunnel/diagnostic/network"
 )
 
 func TestDecode(t *testing.T) {

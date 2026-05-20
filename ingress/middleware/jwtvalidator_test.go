@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	issuer = fmt.Sprintf(cloudflareAccessCertsURL, "testteam")
+	issuer = fmt.Sprintf(cinaAccessCertsURL, "testteam")
 )
 
 type accessTokenClaims struct {

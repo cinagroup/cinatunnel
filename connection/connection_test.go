@@ -14,12 +14,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
 
-	"github.com/cloudflare/cloudflared/stream"
-	"github.com/cloudflare/cloudflared/tracing"
-	tunnelpogs "github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	"github.com/cloudflare/cloudflared/websocket"
+	"github.com/cinagroup/cinatunnel/stream"
+	"github.com/cinagroup/cinatunnel/tracing"
+	tunnelpogs "github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/websocket"
 )
 
 const (
@@ -129,7 +129,7 @@ func (ep *echoPipe) Write(p []byte) (int, error) {
 }
 
 // A mock origin that echos data by streaming like a tcpOverWSConnection
-// https://github.com/cloudflare/cloudflared/blob/master/ingress/origin_connection.go
+// https://github.com/cinagroup/cinatunnel/blob/master/ingress/origin_connection.go
 func wsEchoEndpoint(w ResponseWriter, r *http.Request) error {
 	resp := &http.Response{
 		StatusCode: http.StatusSwitchingProtocols,

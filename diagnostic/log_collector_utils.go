@@ -67,7 +67,7 @@ func PipeCommandOutputToFile(command *exec.Cmd, outputHandle *os.File) (*LogInfo
 }
 
 func CopyFilesFromDirectory(path string) (string, error) {
-	const defaultLogFilename = "cloudflared.log"
+	const defaultLogFilename = "cinatunnel.log"
 
 	// rolling logs have as suffix the current date thus
 	// when iterating the path files they are already in

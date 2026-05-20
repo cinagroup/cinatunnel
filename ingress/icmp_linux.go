@@ -21,8 +21,8 @@ import (
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel/attribute"
 
-	"github.com/cloudflare/cloudflared/packet"
-	"github.com/cloudflare/cloudflared/tracing"
+	"github.com/cinagroup/cinatunnel/packet"
+	"github.com/cinagroup/cinatunnel/tracing"
 )
 
 const (
@@ -58,7 +58,7 @@ func testPermission(listenIP netip.Addr, logger *zerolog.Logger) error {
 	// Only check ping_group_range once for IPv4
 	if listenIP.Is4() {
 		if err := checkInPingGroup(); err != nil {
-			logger.Warn().Err(err).Msgf("The user running cloudflared process has a GID (group ID) that is not within ping_group_range. You might need to add that user to a group within that range, or instead update the range to encompass a group the user is already in by modifying %s. Otherwise cloudflared will not be able to ping this network", pingGroupPath)
+			logger.Warn().Err(err).Msgf("The user running cinatunnel process has a GID (group ID) that is not within ping_group_range. You might need to add that user to a group within that range, or instead update the range to encompass a group the user is already in by modifying %s. Otherwise cinatunnel will not be able to ping this network", pingGroupPath)
 			return err
 		}
 	}
@@ -66,7 +66,7 @@ func testPermission(listenIP netip.Addr, logger *zerolog.Logger) error {
 	if err != nil {
 		return err
 	}
-	// This conn is only to test if cloudflared has permission to open this type of socket
+	// This conn is only to test if cinatunnel has permission to open this type of socket
 	conn.Close()
 	return nil
 }

@@ -21,8 +21,8 @@ import (
 	zerolog "github.com/rs/zerolog"
 	gomock "go.uber.org/mock/gomock"
 
-	dialopts "github.com/cloudflare/cloudflared/connection/dialopts"
-	allregions "github.com/cloudflare/cloudflared/edgediscovery/allregions"
+	dialopts "github.com/cinagroup/cinatunnel/connection/dialopts"
+	allregions "github.com/cinagroup/cinatunnel/edgediscovery/allregions"
 )
 
 // MockDNSResolver is a mock of DNSResolver interface.

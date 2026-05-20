@@ -17,13 +17,13 @@ import (
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/cloudflare/cloudflared/client"
-	cfdflow "github.com/cloudflare/cloudflared/flow"
+	"github.com/cinagroup/cinatunnel/client"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
 
-	cfdquic "github.com/cloudflare/cloudflared/quic"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	rpcquic "github.com/cloudflare/cloudflared/tunnelrpc/quic"
+	cfdquic "github.com/cinagroup/cinatunnel/quic"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	rpcquic "github.com/cinagroup/cinatunnel/tunnelrpc/quic"
 )
 
 const (
@@ -54,7 +54,7 @@ type quicConnection struct {
 	gracePeriod        time.Duration
 }
 
-// NewTunnelConnection takes a [quic.Connection] to wrap it for use with cloudflared application logic.
+// NewTunnelConnection takes a [quic.Connection] to wrap it for use with cinatunnel application logic.
 func NewTunnelConnection(
 	ctx context.Context,
 	conn quic.Connection,
@@ -83,7 +83,7 @@ func NewTunnelConnection(
 }
 
 // Serve starts a QUIC connection that begins accepting streams.
-// Returning a nil error means cloudflared will exit for good and will not attempt to reconnect.
+// Returning a nil error means cinatunnel will exit for good and will not attempt to reconnect.
 func (q *quicConnection) Serve(ctx context.Context) error {
 	// The edge assumes the first stream is used for the control plane
 	controlStream, err := q.conn.OpenStream()
@@ -104,7 +104,7 @@ func (q *quicConnection) Serve(ctx context.Context) error {
 	errGroup.Go(func() error {
 		// err is equal to nil if we exit due to unregistration. If that happens we want to wait the full
 		// amount of the grace period, allowing requests to finish before we cancel the context, which will
-		// make cloudflared exit.
+		// make cinatunnel exit.
 		if err := q.serveControlStream(ctx, controlStream); err == nil {
 			if q.gracePeriod > 0 {
 				// In Go1.23 this can be removed and replaced with time.Ticker
@@ -171,12 +171,12 @@ func (q *quicConnection) runStream(quicStream quic.Stream) {
 	stream := cfdquic.NewSafeStreamCloser(quicStream, q.streamWriteTimeout, q.logger)
 	defer stream.Close()
 
-	// we are going to fuse readers/writers from stream <- cloudflared -> origin, and we want to guarantee that
+	// we are going to fuse readers/writers from stream <- cinatunnel -> origin, and we want to guarantee that
 	// code executed in the code path of handleStream don't trigger an earlier close to the downstream write stream.
 	// So, we wrap the stream with a no-op write closer and only this method can actually close write side of the stream.
 	// A call to close will simulate a close to the read-side, which will fail subsequent reads.
 	noCloseStream := &nopCloserReadWriter{ReadWriteCloser: stream}
-	ss := rpcquic.NewCloudflaredServer(q.handleDataStream, q.datagramHandler, q, q.rpcTimeout)
+	ss := rpcquic.NewCinatunnelServer(q.handleDataStream, q.datagramHandler, q, q.rpcTimeout)
 	if err := ss.Serve(ctx, noCloseStream); err != nil {
 		q.logger.Debug().Err(err).Msg("Failed to handle QUIC stream")
 
@@ -264,7 +264,7 @@ func (s *streamReadWriteAcker) AckConnection(tracePropagation string) error {
 	// Only add tracing if provided by the edge request
 	if tracePropagation != "" {
 		metadata = append(metadata, pogs.Metadata{
-			Key: tracing.CanonicalCloudflaredTracingHeader,
+			Key: tracing.CanonicalCinatunnelTracingHeader,
 			Val: tracePropagation,
 		})
 	}

@@ -5,15 +5,15 @@ import (
 )
 
 const (
-	metricsNamespace = "cloudflared"
+	metricsNamespace = "cinatunnel"
 	rpcSubsystem     = "rpc"
 )
 
-// CloudflaredServer operation labels
-// CloudflaredServer is an extension of SessionManager with additional methods, but it's helpful
+// CinatunnelServer operation labels
+// CinatunnelServer is an extension of SessionManager with additional methods, but it's helpful
 // to visualize it separately in the metrics since they are technically different client/servers.
 const (
-	Cloudflared = "cloudflared"
+	Cinatunnel = "cinatunnel"
 )
 
 // ConfigurationManager operation labels

@@ -63,7 +63,7 @@ func TestSession_Insert(t *testing.T) {
 		{
 			name: "filtered out event",
 			filters: StreamingFilters{
-				Events: []LogEventType{Cloudflared},
+				Events: []LogEventType{Cinatunnel},
 			},
 			expectLog: false,
 		},

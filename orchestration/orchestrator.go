@@ -11,13 +11,13 @@ import (
 	pkgerrors "github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/cmd/cloudflared/flags"
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/connection"
-	cfdflow "github.com/cloudflare/cloudflared/flow"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/proxy"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/cmd/cinatunnel/flags"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/connection"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/proxy"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 // Orchestrator manages configurations, so they can be updatable during runtime
@@ -31,9 +31,9 @@ type Orchestrator struct {
 	lock sync.RWMutex
 	// Underlying value is proxy.Proxy, can be read without the lock, but still needs the lock to update
 	proxy atomic.Value
-	// Set of internal ingress rules defined at cloudflared startup (separate from user-defined ingress rules)
+	// Set of internal ingress rules defined at cinatunnel startup (separate from user-defined ingress rules)
 	internalRules []ingress.Rule
-	// cloudflared Configuration
+	// cinatunnel Configuration
 	config *Config
 	tags   []pogs.Tag
 	// flowLimiter tracks active sessions across the tunnel and limits new sessions if they are above the limit.
@@ -150,7 +150,7 @@ func (o *Orchestrator) overrideMaxActiveFlows(maxActiveFlowsLocalConfig string, 
 func (o *Orchestrator) updateIngress(ingressRules ingress.Ingress, warpRouting ingress.WarpRoutingConfig) error {
 	select {
 	case <-o.shutdownC:
-		return fmt.Errorf("cloudflared already shutdown")
+		return fmt.Errorf("cinatunnel already shutdown")
 	default:
 	}
 
@@ -259,7 +259,7 @@ func (o *Orchestrator) GetOriginProxy() (connection.OriginProxy, error) {
 	return proxy, nil
 }
 
-// GetFlowLimiter returns the flow limiter used across cloudflared, that can be hot reload when
+// GetFlowLimiter returns the flow limiter used across cinatunnel, that can be hot reload when
 // the configuration changes.
 func (o *Orchestrator) GetFlowLimiter() cfdflow.Limiter {
 	return o.flowLimiter

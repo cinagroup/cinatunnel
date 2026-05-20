@@ -4,7 +4,7 @@ import socket
 import pytest
 
 from constants import protocols
-from cli import CloudflaredCli
+from cli import CinatunnelCli
 from util import get_tunnel_connector_id, LOGGER, wait_tunnel_ready, write_config
 
 
@@ -85,10 +85,10 @@ class TestEdgeDiscovery:
             self._extra_config(protocol, edge_ip_version))
         config_path = write_config(tmp_path, config.full_config)
         LOGGER.debug(config)
-        with CloudflaredCli(config, config_path, LOGGER):
+        with CinatunnelCli(config, config_path, LOGGER):
             wait_tunnel_ready(tunnel_url=config.get_url(),
                               require_min_connections=4)
-            cfd_cli = CloudflaredCli(config, config_path, LOGGER)
+            cfd_cli = CinatunnelCli(config, config_path, LOGGER)
             tunnel_id = config.get_tunnel_id()
             info = cfd_cli.get_tunnel_info(tunnel_id)
             connector_id = get_tunnel_connector_id()

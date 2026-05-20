@@ -129,7 +129,7 @@ func (fs *featureSelector) prechecksSkip() bool {
 	return fs.remoteFeatures.SkipPrechecks
 }
 
-// clientFeatures will return the list of currently available features that cloudflared should provide to the edge.
+// clientFeatures will return the list of currently available features that cinatunnel should provide to the edge.
 func (fs *featureSelector) clientFeatures() []string {
 	// Evaluate any remote features along with static feature list to construct the list of features
 	return dedupAndRemoveFeatures(slices.Concat(defaultFeatures, fs.cliFeatures, []string{string(fs.datagramVersion())}))

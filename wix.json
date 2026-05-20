@@ -1,12 +1,12 @@
 {
-  "product": "cloudflared",
-  "company": "cloudflare",
+  "product": "cinatunnel",
+  "company": "CinaGroup",
   "license": "LICENSE",
   "upgrade-code": "23f90fdd-9328-47ea-ab52-5380855a4b12",
   "files": {
     "guid": "35e5e858-9372-4449-bf73-1cd6f7267128",
     "items": [
-      "cloudflared.exe"
+      "cinatunnel.exe"
     ]
   },
   "env": {
@@ -24,21 +24,21 @@
   },
   "shortcuts": {},
   "choco": {
-    "description": "cloudflared connects your machine or user identity to Cloudflare's global network.",
-    "project-url": "https://github.com/cloudflare/cloudflared",
-    "license-url": "https://github.com/cloudflare/cloudflared/blob/master/LICENSE"
+    "description": "cinatunnel connects your machine or user identity to Cina's global network.",
+    "project-url": "https://github.com/cinagroup/cinatunnel",
+    "license-url": "https://github.com/cinagroup/cinatunnel/blob/master/LICENSE"
   },
   "hooks": [
     {
-      "command": "sc.exe create Cloudflared binPath=\"[INSTALLDIR]cloudflared.exe\" type=share start=auto DisplayName=\"Cloudflared\"",
+      "command": "sc.exe create Cinatunnel binPath=\"[INSTALLDIR]cinatunnel.exe\" type=share start=auto DisplayName=\"Cinatunnel\"",
       "when": "install"
     },
     {
-      "command": "sc.exe start Cloudflared",
+      "command": "sc.exe start Cinatunnel",
       "when": "install"
     },
     {
-      "command": "sc.exe delete Cloudflared",
+      "command": "sc.exe delete Cinatunnel",
       "when": "uninstall"
     }
   ]

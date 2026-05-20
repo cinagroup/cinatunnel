@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 	"zombiezen.com/go/capnproto2/rpc"
 
-	"github.com/cloudflare/cloudflared/tunnelrpc/metrics"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 type RegistrationClient interface {

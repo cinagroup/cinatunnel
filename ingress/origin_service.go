@@ -15,11 +15,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/hello"
-	"github.com/cloudflare/cloudflared/ipaccess"
-	"github.com/cloudflare/cloudflared/management"
-	"github.com/cloudflare/cloudflared/socks"
-	"github.com/cloudflare/cloudflared/tlsconfig"
+	"github.com/cinagroup/cinatunnel/hello"
+	"github.com/cinagroup/cinatunnel/ipaccess"
+	"github.com/cinagroup/cinatunnel/management"
+	"github.com/cinagroup/cinatunnel/socks"
+	"github.com/cinagroup/cinatunnel/tlsconfig"
 )
 
 const (
@@ -31,10 +31,10 @@ const (
 // OriginService is something a tunnel can proxy traffic to.
 type OriginService interface {
 	String() string
-	// Start the origin service if it's managed by cloudflared, e.g. proxy servers or Hello World.
-	// If it's not managed by cloudflared, this is a no-op because the user is responsible for
+	// Start the origin service if it's managed by cinatunnel, e.g. proxy servers or Hello World.
+	// If it's not managed by cinatunnel, this is a no-op because the user is responsible for
 	// starting the origin service.
-	// Implementor of services managed by cloudflared should terminate the service if shutdownC is closed
+	// Implementor of services managed by cinatunnel should terminate the service if shutdownC is closed
 	start(log *zerolog.Logger, shutdownC <-chan struct{}, cfg OriginRequestConfig) error
 	MarshalJSON() ([]byte, error)
 }
@@ -115,7 +115,7 @@ func (o rawTCPService) MarshalJSON() ([]byte, error) {
 }
 
 // tcpOverWSService models TCP origins serving eyeballs connecting over websocket, such as
-// cloudflared access commands.
+// cinatunnel access commands.
 type tcpOverWSService struct {
 	scheme        string
 	dest          string
@@ -209,7 +209,7 @@ func (o socksProxyOverWSService) MarshalJSON() ([]byte, error) {
 }
 
 // HelloWorld is an OriginService for the built-in Hello World server.
-// Users only use this for testing and experimenting with cloudflared.
+// Users only use this for testing and experimenting with cinatunnel.
 type helloWorld struct {
 	httpService
 	server net.Listener
@@ -262,7 +262,7 @@ func newStatusCode(status int) statusCode {
 	return statusCode{code: status}
 }
 
-// default status code (503) that is returned for requests to cloudflared that don't have any ingress rules setup
+// default status code (503) that is returned for requests to cinatunnel that don't have any ingress rules setup
 func newDefaultStatusCode(log *zerolog.Logger) statusCode {
 	return statusCode{code: 503, defaultResp: true, log: log}
 }

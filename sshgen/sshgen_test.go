@@ -20,8 +20,8 @@ import (
 	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudflare/cloudflared/config"
-	cfpath "github.com/cloudflare/cloudflared/token"
+	"github.com/cinagroup/cinatunnel/config"
+	cfpath "github.com/cinagroup/cinatunnel/token"
 )
 
 const (

@@ -12,12 +12,12 @@ import (
 	"github.com/quic-go/quic-go"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/connection/dialopts"
+	"github.com/cinagroup/cinatunnel/connection/dialopts"
 
-	"github.com/cloudflare/cloudflared/connection"
-	edgedial "github.com/cloudflare/cloudflared/edgediscovery"
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
-	"github.com/cloudflare/cloudflared/tlsconfig"
+	"github.com/cinagroup/cinatunnel/connection"
+	edgedial "github.com/cinagroup/cinatunnel/edgediscovery"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/tlsconfig"
 )
 
 const (
@@ -27,19 +27,19 @@ const (
 	actionDNSFail        = "Ensure your DNS resolver can resolve '%s'. Run: dig A %s @1.1.1.1. If that fails, contact your network administrator."
 	actionQUICBlocked    = "QUIC traffic failed to connect to port 7844."
 	actionHTTP2Blocked   = "Allow outbound TCP on port 7844."
-	actionAPIUnreachable = "cloudflared will still run, but automatic software updates are unavailable. " +
-		"Ensure port 443 TCP to api.cloudflare.com is open if you want auto-updates."
+	actionAPIUnreachable = "cinatunnel will still run, but automatic software updates are unavailable. " +
+		"Ensure port 443 TCP to api.cina.com is open if you want auto-updates."
 
 	// Component names for CheckResult.
 	componentDNSResolution   = "DNS Resolution"
 	componentUDPConnectivity = "UDP Connectivity"
 	componentTCPConnectivity = "TCP Connectivity"
-	componentCloudflareAPI   = "Cloudflare API"
+	componentCinaAPI   = "Cina API"
 
 	// Target identifiers for CheckResult.
 	targetPortQUIC  = "Port 7844 (QUIC)"
 	targetPortHTTP2 = "Port 7844 (HTTP/2)"
-	targetAPI       = "api.cloudflare.com:443"
+	targetAPI       = "api.cina.com:443"
 	noDNSTarget     = "No DNS target (Using edge flag)"
 
 	// Details messages for CheckResult.
@@ -258,7 +258,7 @@ func probeHTTP2(ctx context.Context, tlsConfig *tls.Config, dialer TCPDialer, ad
 	}
 }
 
-// probeManagementAPI tests TCP connectivity to api.cloudflare.com:443. A
+// probeManagementAPI tests TCP connectivity to api.cina.com:443. A
 // successful TCP connection (no TLS handshake required) confirms the port is
 // reachable. This probe is always a soft failure: the tunnel can run without
 // it, but automatic software updates will be unavailable.
@@ -270,7 +270,7 @@ func probeManagementAPI(ctx context.Context, dialer ManagementDialer) CheckResul
 	if err != nil {
 		return CheckResult{
 			Type:        ProbeTypeManagementAPI,
-			Component:   componentCloudflareAPI,
+			Component:   componentCinaAPI,
 			Target:      targetAPI,
 			ProbeStatus: Fail,
 			Details:     detailsConnectionFailed,
@@ -281,7 +281,7 @@ func probeManagementAPI(ctx context.Context, dialer ManagementDialer) CheckResul
 
 	return CheckResult{
 		Type:        ProbeTypeManagementAPI,
-		Component:   componentCloudflareAPI,
+		Component:   componentCinaAPI,
 		Target:      targetAPI,
 		ProbeStatus: Pass,
 		Details:     detailsTCPPortReachable,

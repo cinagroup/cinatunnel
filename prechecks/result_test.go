@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/connection"
+	"github.com/cinagroup/cinatunnel/connection"
 )
 
 // fixedRunID is used in all fixtures so golden strings are deterministic.
@@ -29,7 +29,7 @@ func allPassReport() Report {
 			{Type: ProbeTypeDNS, Component: "DNS Resolution", Target: "region2.v2.argotunnel.com", ProbeStatus: Pass, Details: "Resolved successfully"},
 			{Type: ProbeTypeQUIC, Component: "UDP Connectivity", Target: "Port 7844 (QUIC)", ProbeStatus: Pass, Details: "Handshake successful"},
 			{Type: ProbeTypeHTTP2, Component: "TCP Connectivity", Target: "Port 7844 (HTTP/2)", ProbeStatus: Pass, Details: "TLS handshake successful"},
-			{Type: ProbeTypeManagementAPI, Component: "Cloudflare API", Target: "api.cloudflare.com:443", ProbeStatus: Pass, Details: "Reachable"},
+			{Type: ProbeTypeManagementAPI, Component: "Cina API", Target: "api.cina.com:443", ProbeStatus: Pass, Details: "Reachable"},
 		},
 	}
 }
@@ -49,15 +49,15 @@ func quicBlockedReport() Report {
 				Target:      "Port 7844 (QUIC)",
 				ProbeStatus: Fail,
 				Details:     "Handshake failed",
-				Action:      "Allow outbound QUIC on port 7844. cloudflared will use http2 in the meantime.",
+				Action:      "Allow outbound QUIC on port 7844. cinatunnel will use http2 in the meantime.",
 			},
 			{Type: ProbeTypeHTTP2, Component: "TCP Connectivity", Target: "Port 7844 (HTTP/2)", ProbeStatus: Pass, Details: "TLS handshake successful"},
-			{Type: ProbeTypeManagementAPI, Component: "Cloudflare API", Target: "api.cloudflare.com:443", ProbeStatus: Pass, Details: "Reachable"},
+			{Type: ProbeTypeManagementAPI, Component: "Cina API", Target: "api.cina.com:443", ProbeStatus: Pass, Details: "Reachable"},
 		},
 	}
 }
 
-// apiFailReport is the degraded scenario: all connectivity passes but the Cloudflare
+// apiFailReport is the degraded scenario: all connectivity passes but the Cina
 // API is unreachable. The tunnel can still run; only automatic updates are unavailable.
 func apiFailReport() Report {
 	return Report{
@@ -70,11 +70,11 @@ func apiFailReport() Report {
 			{Type: ProbeTypeHTTP2, Component: "TCP Connectivity", Target: "Port 7844 (HTTP/2)", ProbeStatus: Pass, Details: "TLS handshake successful"},
 			{
 				Type:        ProbeTypeManagementAPI,
-				Component:   "Cloudflare API",
-				Target:      "api.cloudflare.com:443",
+				Component:   "Cina API",
+				Target:      "api.cina.com:443",
 				ProbeStatus: Fail,
 				Details:     "Connection refused",
-				Action:      "cloudflared will still run, but automatic software updates are unavailable. Ensure port 443 TCP to api.cloudflare.com is open if you want auto-updates.",
+				Action:      "cinatunnel will still run, but automatic software updates are unavailable. Ensure port 443 TCP to api.cina.com is open if you want auto-updates.",
 			},
 		},
 	}
@@ -94,7 +94,7 @@ func bothTransportsBlockedReport() Report {
 				Target:      "Port 7844 (QUIC)",
 				ProbeStatus: Fail,
 				Details:     "Handshake failed",
-				Action:      "Allow outbound QUIC and/or TCP on port 7844 to the Cloudflare edge.",
+				Action:      "Allow outbound QUIC and/or TCP on port 7844 to the Cina edge.",
 			},
 			{
 				Type:        ProbeTypeHTTP2,
@@ -103,7 +103,7 @@ func bothTransportsBlockedReport() Report {
 				ProbeStatus: Fail,
 				Details:     "Blocked or unreachable",
 			},
-			{Type: ProbeTypeManagementAPI, Component: "Cloudflare API", Target: "api.cloudflare.com:443", ProbeStatus: Pass, Details: "Reachable"},
+			{Type: ProbeTypeManagementAPI, Component: "Cina API", Target: "api.cina.com:443", ProbeStatus: Pass, Details: "Reachable"},
 		},
 	}
 }
@@ -125,7 +125,7 @@ func dnsFailReport() Report {
 			{Type: ProbeTypeDNS, Component: "DNS Resolution", Target: "region2.v2.argotunnel.com", ProbeStatus: Fail, Details: "No addresses returned"},
 			{Type: ProbeTypeQUIC, Component: "UDP Connectivity", Target: "Port 7844 (QUIC)", ProbeStatus: Skip, Details: "DNS prerequisite failed"},
 			{Type: ProbeTypeHTTP2, Component: "TCP Connectivity", Target: "Port 7844 (HTTP/2)", ProbeStatus: Skip, Details: "DNS prerequisite failed"},
-			{Type: ProbeTypeManagementAPI, Component: "Cloudflare API", Target: "api.cloudflare.com:443", ProbeStatus: Fail, Details: "Connection refused"},
+			{Type: ProbeTypeManagementAPI, Component: "Cina API", Target: "api.cina.com:443", ProbeStatus: Fail, Details: "Connection refused"},
 		},
 	}
 }
@@ -141,9 +141,9 @@ func TestString_AllPass(t *testing.T) {
 		"DNS Resolution    region2.v2.argotunnel.com  PASS    Resolved successfully\n" +
 		"UDP Connectivity  Port 7844 (QUIC)           PASS    Handshake successful\n" +
 		"TCP Connectivity  Port 7844 (HTTP/2)         PASS    TLS handshake successful\n" +
-		"Cloudflare API    api.cloudflare.com:443     PASS    Reachable\n" +
+		"Cina API    api.cina.com:443     PASS    Reachable\n" +
 		"\n" +
-		"SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.\n" +
+		"SUMMARY: Environment is healthy. cinatunnel will use 'quic' as primary protocol.\n" +
 		"--------------------------------------------------------------------------------\n"
 	assert.Equal(t, want, allPassReport().String())
 }
@@ -157,10 +157,10 @@ func TestString_QuicBlocked(t *testing.T) {
 		"DNS Resolution    region2.v2.argotunnel.com  PASS    Resolved successfully\n" +
 		"UDP Connectivity  Port 7844 (QUIC)           FAIL    Handshake failed\n" +
 		"TCP Connectivity  Port 7844 (HTTP/2)         PASS    TLS handshake successful\n" +
-		"Cloudflare API    api.cloudflare.com:443     PASS    Reachable\n" +
-		"WARNING: Allow outbound QUIC on port 7844. cloudflared will use http2 in the meantime.\n" +
+		"Cina API    api.cina.com:443     PASS    Reachable\n" +
+		"WARNING: Allow outbound QUIC on port 7844. cinatunnel will use http2 in the meantime.\n" +
 		"\n" +
-		"SUMMARY: Environment ready with degraded transport. cloudflared will proceed using 'http2'.\n" +
+		"SUMMARY: Environment ready with degraded transport. cinatunnel will proceed using 'http2'.\n" +
 		"--------------------------------------------------------------------------------\n"
 	assert.Equal(t, want, quicBlockedReport().String())
 }
@@ -174,10 +174,10 @@ func TestString_APIFail(t *testing.T) {
 		"DNS Resolution    region2.v2.argotunnel.com  PASS    Resolved successfully\n" +
 		"UDP Connectivity  Port 7844 (QUIC)           PASS    Handshake successful\n" +
 		"TCP Connectivity  Port 7844 (HTTP/2)         PASS    TLS handshake successful\n" +
-		"Cloudflare API    api.cloudflare.com:443     FAIL    Connection refused\n" +
-		"WARNING: cloudflared will still run, but automatic software updates are unavailable. Ensure port 443 TCP to api.cloudflare.com is open if you want auto-updates.\n" +
+		"Cina API    api.cina.com:443     FAIL    Connection refused\n" +
+		"WARNING: cinatunnel will still run, but automatic software updates are unavailable. Ensure port 443 TCP to api.cina.com is open if you want auto-updates.\n" +
 		"\n" +
-		"SUMMARY: Environment ready with degraded transport. cloudflared will proceed using 'quic'.\n" +
+		"SUMMARY: Environment ready with degraded transport. cinatunnel will proceed using 'quic'.\n" +
 		"--------------------------------------------------------------------------------\n"
 	assert.Equal(t, want, apiFailReport().String())
 }
@@ -191,10 +191,10 @@ func TestString_BothTransportsBlocked(t *testing.T) {
 		"DNS Resolution    region2.v2.argotunnel.com  PASS    Resolved successfully\n" +
 		"UDP Connectivity  Port 7844 (QUIC)           FAIL    Handshake failed\n" +
 		"TCP Connectivity  Port 7844 (HTTP/2)         FAIL    Blocked or unreachable\n" +
-		"Cloudflare API    api.cloudflare.com:443     PASS    Reachable\n" +
-		"ERROR: Allow outbound QUIC and/or TCP on port 7844 to the Cloudflare edge.\n" +
+		"Cina API    api.cina.com:443     PASS    Reachable\n" +
+		"ERROR: Allow outbound QUIC and/or TCP on port 7844 to the Cina edge.\n" +
 		"\n" +
-		"SUMMARY: Environment has critical failures. cloudflared may not be able to establish a tunnel.\n" +
+		"SUMMARY: Environment has critical failures. cinatunnel may not be able to establish a tunnel.\n" +
 		"--------------------------------------------------------------------------------\n"
 	assert.Equal(t, want, bothTransportsBlockedReport().String())
 }
@@ -208,10 +208,10 @@ func TestString_DNSFail(t *testing.T) {
 		"DNS Resolution    region2.v2.argotunnel.com  FAIL    No addresses returned\n" +
 		"UDP Connectivity  Port 7844 (QUIC)           SKIP    DNS prerequisite failed\n" +
 		"TCP Connectivity  Port 7844 (HTTP/2)         SKIP    DNS prerequisite failed\n" +
-		"Cloudflare API    api.cloudflare.com:443     FAIL    Connection refused\n" +
+		"Cina API    api.cina.com:443     FAIL    Connection refused\n" +
 		"ERROR: Ensure your DNS resolver can resolve 'region1.v2.argotunnel.com'. Run: dig A region1.v2.argotunnel.com @1.1.1.1. If that fails, contact your network administrator.\n" +
 		"\n" +
-		"SUMMARY: Environment has critical failures. cloudflared may not be able to establish a tunnel.\n" +
+		"SUMMARY: Environment has critical failures. cinatunnel may not be able to establish a tunnel.\n" +
 		"--------------------------------------------------------------------------------\n"
 	assert.Equal(t, want, dnsFailReport().String())
 }
@@ -280,7 +280,7 @@ func TestLogEvent_AllPass(t *testing.T) {
 		{"DNS Resolution", "region2.v2.argotunnel.com", "pass", "Resolved successfully"},
 		{"UDP Connectivity", "Port 7844 (QUIC)", "pass", "Handshake successful"},
 		{"TCP Connectivity", "Port 7844 (HTTP/2)", "pass", "TLS handshake successful"},
-		{"Cloudflare API", "api.cloudflare.com:443", "pass", "Reachable"},
+		{"Cina API", "api.cina.com:443", "pass", "Reachable"},
 	}
 	for i, exp := range expected {
 		e := entries[i]
@@ -331,8 +331,8 @@ func TestLogEvent_APIFail(t *testing.T) {
 	// API row (index 4) carries status=fail and the expected details.
 	api := entries[4]
 	assert.Equal(t, "fail", api.Status)
-	assert.Equal(t, "Cloudflare API", api.Component)
-	assert.Equal(t, "api.cloudflare.com:443", api.Target)
+	assert.Equal(t, "Cina API", api.Component)
+	assert.Equal(t, "api.cina.com:443", api.Target)
 	assert.Equal(t, "Connection refused", api.Details)
 	assert.Equal(t, fixedRunID.String(), api.RunID)
 

@@ -24,17 +24,17 @@ import (
 	"go.uber.org/mock/gomock"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/cloudflare/cloudflared/mocks"
+	"github.com/cinagroup/cinatunnel/mocks"
 
-	cfdflow "github.com/cloudflare/cloudflared/flow"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
 
-	"github.com/cloudflare/cloudflared/cfio"
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/hello"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/cfio"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/hello"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 var (
@@ -471,7 +471,7 @@ func (r *replayer) Bytes() []byte {
 }
 
 // TestConnections tests every possible permutation of connection protocols
-// proxied by cloudflared.
+// proxied by cinatunnel.
 //
 // WS - WS : When a websocket based ingress is configured on the origin and
 // the eyeball is also a websocket client streaming data.
@@ -480,7 +480,7 @@ func (r *replayer) Bytes() []byte {
 // TCP - WS: When teamnet is enabled and a websocket based service is running
 // on the origin.
 // WS - TCP: When a tcp based ingress is configured on the origin and the
-// eyeball sends tcp packets wrapped in websockets. (E.g: cloudflared access).
+// eyeball sends tcp packets wrapped in websockets. (E.g: cinatunnel access).
 func TestConnections(t *testing.T) {
 	log := zerolog.Nop()
 	replayer := &replayer{rw: bytes.NewBuffer([]byte{})}
@@ -527,7 +527,7 @@ func TestConnections(t *testing.T) {
 				requestHeaders: map[string][]string{
 					// Example key from https://tools.ietf.org/html/rfc6455#section-1.2
 					"Sec-Websocket-Key":     {"dGhlIHNhbXBsZSBub25jZQ=="},
-					"Test-Cloudflared-Echo": {"Echo"},
+					"Test-Cinatunnel-Echo": {"Echo"},
 				},
 			},
 			want: want{
@@ -536,7 +536,7 @@ func TestConnections(t *testing.T) {
 					"Connection":            {"Upgrade"},
 					"Sec-Websocket-Accept":  {"s3pPLMBiTxaQ9kYGzzhZRbK+xOo="},
 					"Upgrade":               {"websocket"},
-					"Test-Cloudflared-Echo": {"Echo"},
+					"Test-Cinatunnel-Echo": {"Echo"},
 				},
 			},
 		},
@@ -549,7 +549,7 @@ func TestConnections(t *testing.T) {
 				eyeballRequestBody:    newTCPRequestBody([]byte("test2")),
 				connectionType:        connection.TypeTCP,
 				requestHeaders: map[string][]string{
-					"Cf-Cloudflared-Proxy-Src": {"non-blank-value"},
+					"Cf-Cinatunnel-Proxy-Src": {"non-blank-value"},
 				},
 			},
 			want: want{
@@ -565,7 +565,7 @@ func TestConnections(t *testing.T) {
 				// eyeballResponseWriter gets set after roundtrip dial.
 				eyeballRequestBody: newPipedWSRequestBody([]byte("test3")),
 				requestHeaders: map[string][]string{
-					"Cf-Cloudflared-Proxy-Src": {"non-blank-value"},
+					"Cf-Cinatunnel-Proxy-Src": {"non-blank-value"},
 				},
 				connectionType: connection.TypeTCP,
 			},
@@ -608,7 +608,7 @@ func TestConnections(t *testing.T) {
 				eyeballRequestBody:    http.NoBody,
 				connectionType:        connection.TypeHTTP,
 				requestHeaders: map[string][]string{
-					"Cf-Cloudflared-Proxy-Src": {"non-blank-value"},
+					"Cf-Cinatunnel-Proxy-Src": {"non-blank-value"},
 				},
 			},
 			want: want{
@@ -653,7 +653,7 @@ func TestConnections(t *testing.T) {
 				eyeballRequestBody:    newTCPRequestBody([]byte("test2")),
 				connectionType:        connection.TypeTCP,
 				requestHeaders: map[string][]string{
-					"Cf-Cloudflared-Proxy-Src": {"non-blank-value"},
+					"Cf-Cinatunnel-Proxy-Src": {"non-blank-value"},
 				},
 			},
 			want: want{
@@ -670,7 +670,7 @@ func TestConnections(t *testing.T) {
 				eyeballRequestBody:    newTCPRequestBody([]byte("rate-limited")),
 				connectionType:        connection.TypeTCP,
 				requestHeaders: map[string][]string{
-					"Cf-Cloudflared-Proxy-Src": {"non-blank-value"},
+					"Cf-Cinatunnel-Proxy-Src": {"non-blank-value"},
 				},
 				flowLimiterResponse: cfdflow.ErrTooManyActiveFlows,
 			},
@@ -978,7 +978,7 @@ func runEchoWSService(t *testing.T, l net.Listener) {
 	ws := func(w http.ResponseWriter, r *http.Request) {
 		header := make(http.Header)
 		for k, vs := range r.Header {
-			if k == "Test-Cloudflared-Echo" {
+			if k == "Test-Cinatunnel-Echo" {
 				header[k] = vs
 			}
 		}

@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"strconv"
 
-	cfdflags "github.com/cloudflare/cloudflared/cmd/cloudflared/flags"
+	cfdflags "github.com/cinagroup/cinatunnel/cmd/cinatunnel/flags"
 )
 
 type httpClient struct {
@@ -60,7 +60,7 @@ func (client *httpClient) GET(ctx context.Context, endpoint string) (*http.Respo
 type LogConfiguration struct {
 	logFile      string
 	logDirectory string
-	uid          int // the uid of the user that started cloudflared
+	uid          int // the uid of the user that started cinatunnel
 }
 
 func (client *httpClient) GetLogConfiguration(ctx context.Context) (*LogConfiguration, error) {
@@ -96,7 +96,7 @@ func (client *httpClient) GetLogConfiguration(ctx context.Context) (*LogConfigur
 		return &LogConfiguration{"", logDirectory, uid}, nil
 	}
 
-	// No log configured may happen when cloudflared is executed as a managed service or
+	// No log configured may happen when cinatunnel is executed as a managed service or
 	// when containerized
 	return &LogConfiguration{"", "", uid}, nil
 }

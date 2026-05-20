@@ -9,8 +9,8 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/packet"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/packet"
 )
 
 const (
@@ -177,10 +177,10 @@ func (c *datagramConn) Serve(ctx context.Context) error {
 	// for the routine.
 	go c.processICMPDatagrams(readCtx)
 	for {
-		// We make sure to monitor the context of cloudflared and the underlying connection to return if any errors occur.
+		// We make sure to monitor the context of cinatunnel and the underlying connection to return if any errors occur.
 		var datagram []byte
 		select {
-		// Monitor the context of cloudflared
+		// Monitor the context of cinatunnel
 		case <-ctx.Done():
 			return ctx.Err()
 		// Monitor the context of the underlying quic connection
@@ -209,8 +209,8 @@ func (c *datagramConn) Serve(ctx context.Context) error {
 				continue
 			}
 			logger := c.logger.With().Str(logFlowID, reg.RequestID.String()).Logger()
-			// We bind the new session to the quic connection context instead of cloudflared context to allow for the
-			// quic connection to close and close only the sessions bound to it. Closing of cloudflared will also
+			// We bind the new session to the quic connection context instead of cinatunnel context to allow for the
+			// quic connection to close and close only the sessions bound to it. Closing of cinatunnel will also
 			// initiate the close of the quic connection, so we don't have to worry about the application context
 			// in the scope of a session.
 			//
@@ -235,7 +235,7 @@ func (c *datagramConn) Serve(ctx context.Context) error {
 			}
 			c.handleICMPPacket(packet)
 		case UDPSessionRegistrationResponseType:
-			// cloudflared should never expect to receive UDP session responses as it will not initiate new
+			// cinatunnel should never expect to receive UDP session responses as it will not initiate new
 			// sessions towards the edge.
 			c.logger.Error().Msgf("unexpected datagram type received: %d", UDPSessionRegistrationResponseType)
 			continue

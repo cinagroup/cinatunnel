@@ -8,12 +8,12 @@ import (
 	"zombiezen.com/go/capnproto2/rpc"
 	"zombiezen.com/go/capnproto2/server"
 
-	"github.com/cloudflare/cloudflared/tunnelrpc/metrics"
-	"github.com/cloudflare/cloudflared/tunnelrpc/proto"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/metrics"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/proto"
 )
 
 type ConfigurationManager interface {
-	// UpdateConfiguration is the call provided to cloudflared to load the latest remote configuration.
+	// UpdateConfiguration is the call provided to cinatunnel to load the latest remote configuration.
 	UpdateConfiguration(ctx context.Context, version int32, config []byte) *UpdateConfigurationResponse
 }
 

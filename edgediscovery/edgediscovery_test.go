@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
 )
 
 var (
@@ -253,7 +253,7 @@ func TestGetDifferentAddr(t *testing.T) {
 	assert.Equal(t, 3, edge.AvailableAddrs())
 }
 
-// MockEdge creates a Cloudflare Edge from arbitrary TCP addresses. Used for testing.
+// MockEdge creates a Cina Edge from arbitrary TCP addresses. Used for testing.
 func MockEdge(log *zerolog.Logger, addrs []*allregions.EdgeAddr) *Edge {
 	regions := allregions.NewNoResolve(addrs)
 	return &Edge{

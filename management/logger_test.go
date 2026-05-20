@@ -108,7 +108,7 @@ func TestParseZerologEvent_EventTypes(t *testing.T) {
 	zlog := zerolog.New(&writer).With().Timestamp().Logger().Level(zerolog.InfoLevel)
 
 	for _, test := range []LogEventType{
-		Cloudflared,
+		Cinatunnel,
 		HTTP,
 		TCP,
 		UDP,
@@ -121,12 +121,12 @@ func TestParseZerologEvent_EventTypes(t *testing.T) {
 		})
 	}
 
-	// Invalid defaults to Cloudflared LogEventType
+	// Invalid defaults to Cinatunnel LogEventType
 	t.Run("invalid", func(t *testing.T) {
 		defer func() { writer.err = nil }()
 		zlog.Info().Str(EventTypeKey, "unknown").Msg("test")
 		require.NoError(t, writer.err)
-		require.Equal(t, Cloudflared, writer.event.Event)
+		require.Equal(t, Cinatunnel, writer.event.Event)
 	})
 }
 
@@ -134,11 +134,11 @@ func TestParseZerologEvent_EventTypes(t *testing.T) {
 func TestParseZerologEvent_Fields(t *testing.T) {
 	writer := mockWriter{}
 	zlog := zerolog.New(&writer).With().Timestamp().Logger().Level(zerolog.InfoLevel)
-	zlog.Info().Int(EventTypeKey, int(Cloudflared)).Str("test", "test").Msg("test message")
+	zlog.Info().Int(EventTypeKey, int(Cinatunnel)).Str("test", "test").Msg("test message")
 	require.NoError(t, writer.err)
 	event := writer.event
 	require.NotEmpty(t, event.Time)
-	require.Equal(t, Cloudflared, event.Event)
+	require.Equal(t, Cinatunnel, event.Event)
 	require.Equal(t, Info, event.Level)
 	require.Equal(t, "test message", event.Message)
 

@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/cloudflare/cloudflared/edgediscovery/allregions"
-	"github.com/cloudflare/cloudflared/mocks"
+	"github.com/cinagroup/cinatunnel/edgediscovery/allregions"
+	"github.com/cinagroup/cinatunnel/mocks"
 )
 
 // Test constants for repeated string values.
@@ -339,13 +339,13 @@ func TestProbeManagementAPI_Success(t *testing.T) {
 	defer ctrl.Finish()
 
 	dialer := mocks.NewMockManagementDialer(ctrl)
-	dialer.EXPECT().DialContext(gomock.Any(), "tcp", "api.cloudflare.com:443").Return(&net.TCPConn{}, nil)
+	dialer.EXPECT().DialContext(gomock.Any(), "tcp", "api.cina.com:443").Return(&net.TCPConn{}, nil)
 
 	result := probeManagementAPI(context.Background(), dialer)
 
 	assert.Equal(t, ProbeTypeManagementAPI, result.Type)
-	assert.Equal(t, "Cloudflare API", result.Component)
-	assert.Equal(t, "api.cloudflare.com:443", result.Target)
+	assert.Equal(t, "Cina API", result.Component)
+	assert.Equal(t, "api.cina.com:443", result.Target)
 	assert.Equal(t, Pass, result.ProbeStatus)
 	assert.Equal(t, detailsTCPPortReachable, result.Details)
 }
@@ -356,7 +356,7 @@ func TestProbeManagementAPI_DialError(t *testing.T) {
 	defer ctrl.Finish()
 
 	dialer := mocks.NewMockManagementDialer(ctrl)
-	dialer.EXPECT().DialContext(gomock.Any(), "tcp", "api.cloudflare.com:443").Return(nil, errors.New("connection refused"))
+	dialer.EXPECT().DialContext(gomock.Any(), "tcp", "api.cina.com:443").Return(nil, errors.New("connection refused"))
 
 	result := probeManagementAPI(context.Background(), dialer)
 

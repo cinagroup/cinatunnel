@@ -22,7 +22,7 @@ const (
 	// In the current state, an invalid command was provided by the client
 	StatusInvalidCommand websocket.StatusCode = 4001
 	reasonInvalidCommand                      = "expected start streaming as first event"
-	// There are a limited number of available streaming log sessions that cloudflared will service, exceeding this
+	// There are a limited number of available streaming log sessions that cinatunnel will service, exceeding this
 	// value will return this error to incoming requests.
 	StatusSessionLimitExceeded websocket.StatusCode = 4002
 	reasonSessionLimitExceeded                      = "limit exceeded for streaming sessions"
@@ -34,8 +34,8 @@ const (
 var (
 	// CORS middleware required to allow dash to access management.argotunnel.com requests
 	corsHandler = cors.Handler(cors.Options{
-		// Allows for any subdomain of cloudflare.com
-		AllowedOrigins: []string{"https://*.cloudflare.com"},
+		// Allows for any subdomain of cina.com
+		AllowedOrigins: []string{"https://*.cina.com"},
 		// Required to present cookies or other authentication across origin boundries
 		AllowCredentials: true,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
@@ -248,7 +248,7 @@ func (m *ManagementService) parseFilters(c *websocket.Conn, event *ClientEvent, 
 func (m *ManagementService) logs(w http.ResponseWriter, r *http.Request) {
 	c, err := websocket.Accept(w, r, &websocket.AcceptOptions{
 		OriginPatterns: []string{
-			"*.cloudflare.com",
+			"*.cina.com",
 		},
 	})
 	if err != nil {

@@ -29,19 +29,19 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/net/nettest"
 
-	"github.com/cloudflare/cloudflared/connection/dialopts"
+	"github.com/cinagroup/cinatunnel/connection/dialopts"
 
-	"github.com/cloudflare/cloudflared/client"
-	"github.com/cloudflare/cloudflared/config"
-	cfdflow "github.com/cloudflare/cloudflared/flow"
+	"github.com/cinagroup/cinatunnel/client"
+	"github.com/cinagroup/cinatunnel/config"
+	cfdflow "github.com/cinagroup/cinatunnel/flow"
 
-	"github.com/cloudflare/cloudflared/datagramsession"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/packet"
-	cfdquic "github.com/cloudflare/cloudflared/quic"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
-	rpcquic "github.com/cloudflare/cloudflared/tunnelrpc/quic"
+	"github.com/cinagroup/cinatunnel/datagramsession"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/packet"
+	cfdquic "github.com/cinagroup/cinatunnel/quic"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
+	rpcquic "github.com/cinagroup/cinatunnel/tunnelrpc/quic"
 )
 
 var (
@@ -56,7 +56,7 @@ var (
 var _ ReadWriteAcker = (*streamReadWriteAcker)(nil)
 
 // TestQUICServer tests if a quic server accepts and responds to a quic client with the acceptance protocol.
-// It also serves as a demonstration for communication with the QUIC connection started by a cloudflared.
+// It also serves as a demonstration for communication with the QUIC connection started by a cinatunnel.
 func TestQUICServer(t *testing.T) {
 	// This is simply a sample websocket frame message.
 	wsBuf := &bytes.Buffer{}
@@ -122,7 +122,7 @@ func TestQUICServer(t *testing.T) {
 			connectionType: pogs.ConnectionTypeWebsocket,
 			metadata: []pogs.Metadata{
 				{
-					Key: "HttpHeader:Cf-Cloudflared-Proxy-Connection-Upgrade",
+					Key: "HttpHeader:Cf-Cinatunnel-Proxy-Connection-Upgrade",
 					Val: "Websocket",
 				},
 				{
@@ -293,7 +293,7 @@ func TestBuildHTTPRequest(t *testing.T) {
 				Dest: "http://test.com",
 				Metadata: []pogs.Metadata{
 					{
-						Key: "HttpHeader:Cf-Cloudflared-Proxy-Connection-Upgrade",
+						Key: "HttpHeader:Cf-Cinatunnel-Proxy-Connection-Upgrade",
 						Val: "Websocket",
 					},
 					{
@@ -339,7 +339,7 @@ func TestBuildHTTPRequest(t *testing.T) {
 				Dest: "http://test.com",
 				Metadata: []pogs.Metadata{
 					{
-						Key: "HttpHeader:Cf-Cloudflared-Proxy-Connection-Upgrade",
+						Key: "HttpHeader:Cf-Cinatunnel-Proxy-Connection-Upgrade",
 						Val: "Websocket",
 					},
 					{
@@ -852,7 +852,7 @@ func runRPCServer(ctx context.Context, session quic.Connection, sessionRPCServer
 		stream, err = session.AcceptStream(ctx)
 		require.NoError(t, err)
 	}
-	ss := rpcquic.NewCloudflaredServer(
+	ss := rpcquic.NewCinatunnelServer(
 		func(_ context.Context, _ *rpcquic.RequestServerStream) error {
 			return nil
 		},

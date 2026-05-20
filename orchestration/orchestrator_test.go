@@ -19,14 +19,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudflare/cloudflared/cmd/cloudflared/flags"
+	"github.com/cinagroup/cinatunnel/cmd/cinatunnel/flags"
 
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/connection"
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/management"
-	"github.com/cloudflare/cloudflared/tracing"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/connection"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/management"
+	"github.com/cinagroup/cinatunnel/tracing"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 var (
@@ -724,12 +724,12 @@ func TestPersistentConnection(t *testing.T) {
 			echoTCP(t, conn)
 		}
 	}()
-	// Simulate cloudflared receiving a TCP connection
+	// Simulate cinatunnel receiving a TCP connection
 	go func() {
 		defer wg.Done()
 		assert.NoError(t, proxyTCP(ctx, originProxy, tcpOrigin.Addr().String(), tcpRespReadWriter, tcpReqReader))
 	}()
-	// Simulate cloudflared receiving a WS connection
+	// Simulate cinatunnel receiving a WS connection
 	go func() {
 		defer wg.Done()
 

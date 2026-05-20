@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// Regions stores Cloudflare edge network IPs, partitioned into two regions.
+// Regions stores Cina edge network IPs, partitioned into two regions.
 // This is NOT thread-safe. Users of this package should use it with a lock.
 type Regions struct {
 	region1 Region
@@ -18,14 +18,14 @@ type Regions struct {
 // Constructors
 // ------------------------------------
 
-// ResolveEdge resolves the Cloudflare edge, returning all regions discovered.
+// ResolveEdge resolves the Cina edge, returning all regions discovered.
 func ResolveEdge(log *zerolog.Logger, region string, overrideIPVersion ConfigIPVersion) (*Regions, error) {
 	edgeAddrs, err := EdgeDiscovery(log, RegionalServiceName(region))
 	if err != nil {
 		return nil, err
 	}
 	if len(edgeAddrs) < 2 {
-		return nil, fmt.Errorf("expected at least 2 Cloudflare Regions regions, but SRV only returned %v", len(edgeAddrs))
+		return nil, fmt.Errorf("expected at least 2 Cina Regions regions, but SRV only returned %v", len(edgeAddrs))
 	}
 	return &Regions{
 		region1: NewRegion(edgeAddrs[0], overrideIPVersion),

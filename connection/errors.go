@@ -1,7 +1,7 @@
 package connection
 
 import (
-	tunnelpogs "github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	tunnelpogs "github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 const (

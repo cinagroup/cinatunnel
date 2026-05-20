@@ -4438,12 +4438,12 @@ func (p ConfigurationManager_updateConfiguration_Results_Promise) Result() Updat
 	return UpdateConfigurationResponse_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
 }
 
-type CloudflaredServer struct{ Client capnp.Client }
+type CinatunnelServer struct{ Client capnp.Client }
 
-// CloudflaredServer_TypeID is the unique identifier for the type CloudflaredServer.
-const CloudflaredServer_TypeID = 0xf548cef9dea2a4a1
+// CinatunnelServer_TypeID is the unique identifier for the type CinatunnelServer.
+const CinatunnelServer_TypeID = 0xf548cef9dea2a4a1
 
-func (c CloudflaredServer) RegisterUdpSession(ctx context.Context, params func(SessionManager_registerUdpSession_Params) error, opts ...capnp.CallOption) SessionManager_registerUdpSession_Results_Promise {
+func (c CinatunnelServer) RegisterUdpSession(ctx context.Context, params func(SessionManager_registerUdpSession_Params) error, opts ...capnp.CallOption) SessionManager_registerUdpSession_Results_Promise {
 	if c.Client == nil {
 		return SessionManager_registerUdpSession_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
 	}
@@ -4463,7 +4463,7 @@ func (c CloudflaredServer) RegisterUdpSession(ctx context.Context, params func(S
 	}
 	return SessionManager_registerUdpSession_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
 }
-func (c CloudflaredServer) UnregisterUdpSession(ctx context.Context, params func(SessionManager_unregisterUdpSession_Params) error, opts ...capnp.CallOption) SessionManager_unregisterUdpSession_Results_Promise {
+func (c CinatunnelServer) UnregisterUdpSession(ctx context.Context, params func(SessionManager_unregisterUdpSession_Params) error, opts ...capnp.CallOption) SessionManager_unregisterUdpSession_Results_Promise {
 	if c.Client == nil {
 		return SessionManager_unregisterUdpSession_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
 	}
@@ -4483,7 +4483,7 @@ func (c CloudflaredServer) UnregisterUdpSession(ctx context.Context, params func
 	}
 	return SessionManager_unregisterUdpSession_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
 }
-func (c CloudflaredServer) UpdateConfiguration(ctx context.Context, params func(ConfigurationManager_updateConfiguration_Params) error, opts ...capnp.CallOption) ConfigurationManager_updateConfiguration_Results_Promise {
+func (c CinatunnelServer) UpdateConfiguration(ctx context.Context, params func(ConfigurationManager_updateConfiguration_Params) error, opts ...capnp.CallOption) ConfigurationManager_updateConfiguration_Results_Promise {
 	if c.Client == nil {
 		return ConfigurationManager_updateConfiguration_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
 	}
@@ -4504,7 +4504,7 @@ func (c CloudflaredServer) UpdateConfiguration(ctx context.Context, params func(
 	return ConfigurationManager_updateConfiguration_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
 }
 
-type CloudflaredServer_Server interface {
+type CinatunnelServer_Server interface {
 	RegisterUdpSession(SessionManager_registerUdpSession) error
 
 	UnregisterUdpSession(SessionManager_unregisterUdpSession) error
@@ -4512,12 +4512,12 @@ type CloudflaredServer_Server interface {
 	UpdateConfiguration(ConfigurationManager_updateConfiguration) error
 }
 
-func CloudflaredServer_ServerToClient(s CloudflaredServer_Server) CloudflaredServer {
+func CinatunnelServer_ServerToClient(s CinatunnelServer_Server) CinatunnelServer {
 	c, _ := s.(server.Closer)
-	return CloudflaredServer{Client: server.New(CloudflaredServer_Methods(nil, s), c)}
+	return CinatunnelServer{Client: server.New(CinatunnelServer_Methods(nil, s), c)}
 }
 
-func CloudflaredServer_Methods(methods []server.Method, s CloudflaredServer_Server) []server.Method {
+func CinatunnelServer_Methods(methods []server.Method, s CinatunnelServer_Server) []server.Method {
 	if cap(methods) == 0 {
 		methods = make([]server.Method, 0, 3)
 	}

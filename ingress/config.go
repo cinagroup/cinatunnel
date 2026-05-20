@@ -6,9 +6,9 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/cloudflare/cloudflared/config"
-	"github.com/cloudflare/cloudflared/ipaccess"
-	"github.com/cloudflare/cloudflared/tlsconfig"
+	"github.com/cinagroup/cinatunnel/config"
+	"github.com/cinagroup/cinatunnel/ipaccess"
+	"github.com/cinagroup/cinatunnel/tlsconfig"
 )
 
 var (
@@ -286,7 +286,7 @@ func originRequestFromConfig(c config.OriginRequestConfig) OriginRequestConfig {
 	return out
 }
 
-// OriginRequestConfig configures how Cloudflared sends requests to origin
+// OriginRequestConfig configures how Cinatunnel sends requests to origin
 // services.
 // Note: To specify a time.Duration in go-yaml, use e.g. "3s" or "24h".
 type OriginRequestConfig struct {
@@ -309,11 +309,11 @@ type OriginRequestConfig struct {
 	// Auto configure the Hostname on the origin server certificate.
 	MatchSNIToHost bool `yaml:"matchSNItoHost" json:"matchSNItoHost"`
 	// Path to the CA for the certificate of your origin.
-	// This option should be used only if your certificate is not signed by Cloudflare.
+	// This option should be used only if your certificate is not signed by Cina.
 	CAPool string `yaml:"caPool" json:"caPool"`
 	// Disables TLS verification of the certificate presented by your origin.
 	// Will allow any certificate from the origin to be accepted.
-	// Note: The connection from your machine to Cloudflare's Edge is still encrypted.
+	// Note: The connection from your machine to Cina's Edge is still encrypted.
 	NoTLSVerify bool `yaml:"noTLSVerify" json:"noTLSVerify"`
 	// Disables chunked transfer encoding.
 	// Useful if you are running a WSGI server.
@@ -456,11 +456,11 @@ func (defaults *OriginRequestConfig) setAccess(overrides config.OriginRequestCon
 	}
 }
 
-// SetConfig gets config for the requests that cloudflared sends to origins.
+// SetConfig gets config for the requests that cinatunnel sends to origins.
 // Each field has a setter method which sets a value for the field by trying to find:
 //  1. The user config for this rule
 //  2. The user config for the overall ingress config
-//  3. Defaults chosen by the cloudflared team
+//  3. Defaults chosen by the cinatunnel team
 //  4. Golang zero values for that type
 //
 // If an earlier option isn't set, it will try the next option down.

@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudflare/cloudflared/diagnostic"
+	"github.com/cinagroup/cinatunnel/diagnostic"
 )
 
 func testHandler(t *testing.T) *http.ServeMux {

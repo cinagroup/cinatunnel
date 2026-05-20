@@ -102,7 +102,7 @@ type SystemInformation struct {
 	OsVersion             string                   `json:"osVersion,omitempty"`             // detailed information about the system's release version level
 	OsRelease             string                   `json:"osRelease,omitempty"`             // detailed information about the system's release
 	Architecture          string                   `json:"architecture,omitempty"`          // represents the system's hardware platform i.e: arm64/amd64
-	CloudflaredVersion    string                   `json:"cloudflaredVersion,omitempty"`    // the runtime version of cloudflared
+	CinatunnelVersion    string                   `json:"cinatunnelVersion,omitempty"`    // the runtime version of cinatunnel
 	GoVersion             string                   `json:"goVersion,omitempty"`
 	GoArch                string                   `json:"goArch,omitempty"`
 	Disk                  []*DiskVolumeInformation `json:"disk,omitempty"`
@@ -118,7 +118,7 @@ func NewSystemInformation(
 	osVersion,
 	osRelease,
 	architecture,
-	cloudflaredVersion,
+	cinatunnelVersion,
 	goVersion,
 	goArchitecture string,
 	disk []*DiskVolumeInformation,
@@ -133,7 +133,7 @@ func NewSystemInformation(
 		osVersion,
 		osRelease,
 		architecture,
-		cloudflaredVersion,
+		cinatunnelVersion,
 		goVersion,
 		goArchitecture,
 		disk,

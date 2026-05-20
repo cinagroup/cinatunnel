@@ -1,5 +1,5 @@
 #!/bin/bash
 set -eu
-ln -sf /usr/bin/cloudflared /usr/local/bin/cloudflared
-mkdir -p /usr/local/etc/cloudflared/
-touch /usr/local/etc/cloudflared/.installedFromPackageManager || true
+ln -sf /usr/bin/cinatunnel /usr/local/bin/cinatunnel
+mkdir -p /usr/local/etc/cinatunnel/
+touch /usr/local/etc/cinatunnel/.installedFromPackageManager || true

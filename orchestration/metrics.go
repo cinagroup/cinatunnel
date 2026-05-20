@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	MetricsNamespace = "cloudflared"
+	MetricsNamespace = "cinatunnel"
 	MetricsSubsystem = "orchestration"
 )
 

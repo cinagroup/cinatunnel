@@ -10,10 +10,10 @@ import (
 	"github.com/quic-go/quic-go"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudflare/cloudflared/ingress"
-	"github.com/cloudflare/cloudflared/management"
-	cfdquic "github.com/cloudflare/cloudflared/quic/v3"
-	"github.com/cloudflare/cloudflared/tunnelrpc/pogs"
+	"github.com/cinagroup/cinatunnel/ingress"
+	"github.com/cinagroup/cinatunnel/management"
+	cfdquic "github.com/cinagroup/cinatunnel/quic/v3"
+	"github.com/cinagroup/cinatunnel/tunnelrpc/pogs"
 )
 
 var (
